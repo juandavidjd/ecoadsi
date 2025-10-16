@@ -28,6 +28,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:ital,wght@0,300;0,600;0,800;1,300&display=swap" rel="stylesheet">
     <style>
+	/* 🔧 Corrección de visibilidad en móviles */
+@media (max-width: 768px) {
+  .module-card {
+    background-color: #0046FF; /* Fondo azul corporativo */
+    color: #FFFFFF; /* Texto blanco */
+    font-size: 0.95rem; /* Ajuste proporcional */
+    text-align: center;
+  }
+
+  .module-card h3 {
+    font-size: 1rem;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+
+  .module-card.active {
+    background-color: #0046FF;
+    color: #FFFFFF;
+    box-shadow: 0 0 18px rgba(0, 224, 255, 0.8);
+  }
+}
         body {
             background-color: #FFFFFF;
             font-family: 'Montserrat', sans-serif;
