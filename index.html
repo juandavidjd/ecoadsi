@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ecosistema ADSI — Presentación Maestra</title>
+	<!-- 🔷 FAVICON Y BRANDING UNIVERSAL ADSI -->
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-adsi.png">
+    <link rel="apple-touch-icon" href="favicon-adsi.png">
+    <link rel="shortcut icon" href="favicon-adsi.png" type="image/png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0046FF">
+    <meta name="msapplication-TileColor" content="#0046FF">
+    <meta name="msapplication-TileImage" content="favicon-adsi.png">
+    <meta name="apple-mobile-web-app-title" content="Ecosistema ADSI">
+    <meta name="application-name" content="Ecosistema ADSI">
+
 	<link rel="icon" href="./favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-adsi.png">
     <link rel="shortcut icon" href="./favicon.ico">
@@ -181,6 +193,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupCanvasAnimation('network-canvas');
     setupCanvasAnimation('vision-canvas','rgba(255,255,255,0.4)','rgba(255,255,255,0.15)');
+	// 🧩 --- MODO PRESENTACIÓN HÍBRIDO (AUTO + MANUAL) ---
+let autoPlay = true;
+let autoInterval;
+let currentIndex = 0;
+
+function autoAdvance() {
+    const cards = document.querySelectorAll('.module-card');
+    if (cards.length === 0) return;
+
+    cards.forEach(c => c.classList.remove('active'));
+    const currentCard = cards[currentIndex];
+    currentCard.classList.add('active');
+    const moduleId = currentCard.dataset.moduleId;
+    updateModuleContent(moduleId);
+
+    currentIndex = (currentIndex + 1) % cards.length;
+}
+
+function startAutoPlay() {
+    if (!autoPlay) return;
+    autoInterval = setInterval(autoAdvance, 10000);
+}
+
+function stopAutoPlay() {
+    clearInterval(autoInterval);
+}
+
+document.addEventListener('keydown', (e) => {
+    const cards = document.querySelectorAll('.module-card');
+    if (cards.length === 0) return;
+
+    if (e.key === 'ArrowRight') {
+        stopAutoPlay();
+        currentIndex = (currentIndex + 1) % cards.length;
+        autoAdvance();
+    } else if (e.key === 'ArrowLeft') {
+        stopAutoPlay();
+        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+        autoAdvance();
+    }
+});
+
+// Inicia el avance automático
+startAutoPlay();
+
 
     // Autoavance híbrido
     let secs=["hero","ecosystem-intro","module-details","vision","contacto"], idx=0, auto=true, timer;
