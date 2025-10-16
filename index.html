@@ -277,16 +277,15 @@
       document.addEventListener("mousemove",stopAuto);
       document.addEventListener("click",stopAuto);
     });
+	// Registro del Service Worker (PWA)
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("service-worker.js")
+        .then(() => console.log("✅ Service Worker registrado correctamente."))
+        .catch((err) => console.warn("⚠️ Error al registrar el SW:", err));
+    });
+  }
   </script>
-  // Registro del Service Worker (PWA)
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("service-worker.js")
-      .then(() => console.log("✅ Service Worker registrado correctamente."))
-      .catch((err) => console.warn("⚠️ Error al registrar el SW:", err));
-  });
-}
-
-</body>
+  </body>
 </html>
