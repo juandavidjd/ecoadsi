@@ -2,14 +2,20 @@
 <browserconfig>
   <msapplication>
     <tile>
+      <!-- Ícono principal -->
       <square70x70logo src="favicon-adsi.png"/>
       <square150x150logo src="favicon-adsi.png"/>
       <wide310x150logo src="favicon-adsi.png"/>
       <square310x310logo src="favicon-adsi.png"/>
+
+      <!-- Colores de marca -->
       <TileColor>#0046FF</TileColor>
+      <TileImage src="favicon-adsi.png"/>
     </tile>
+
+    <!-- Imagen alternativa para transparencia -->
     <notification>
-      <polling-uri src="https://juandavidjd.github.io/ecoadsi/feed.xml"/>
+      <polling-uri src="feed.xml"/>
       <frequency>30</frequency>
       <cycle>1</cycle>
     </notification>

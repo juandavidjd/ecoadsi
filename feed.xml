@@ -1,37 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-  <channel>
-    <title>Ecosistema ADSI — Actualizaciones</title>
-    <link>https://juandavidjd.github.io/ecoadsi/</link>
-    <description>Últimas novedades y módulos actualizados del Ecosistema ADSI.</description>
-    <language>es</language>
-    <lastBuildDate>Wed, 15 Oct 2025 20:00:00 GMT</lastBuildDate>
-    <managingEditor>contacto@adsi.com (Equipo ADSI)</managingEditor>
-    <webMaster>contacto@adsi.com (Equipo ADSI)</webMaster>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ecosistema ADSI - Actualizaciones</title>
+  <link href="https://juandavidjd.github.io/ecoadsi/feed.xml" rel="self"/>
+  <link href="https://juandavidjd.github.io/ecoadsi/"/>
+  <updated>2025-10-16T00:00:00Z</updated>
+  <author>
+    <name>Juan David Jiménez Sierra</name>
+    <email>contacto@adsi.com</email>
+  </author>
+  <id>https://juandavidjd.github.io/ecoadsi/</id>
 
-    <item>
-      <title>🔁 Mejora del modo presentación híbrido</title>
-      <link>https://juandavidjd.github.io/ecoadsi/#module-details</link>
-      <description>Se ha optimizado el autoavance híbrido con mayor tiempo de lectura y reactivación inteligente tras interacción manual.</description>
-      <pubDate>Wed, 15 Oct 2025 20:00:00 GMT</pubDate>
-      <guid>https://juandavidjd.github.io/ecoadsi/update-auto-play</guid>
-    </item>
-
-    <item>
-      <title>🌐 Expansión del fondo animado en secciones</title>
-      <link>https://juandavidjd.github.io/ecoadsi/#vision</link>
-      <description>El efecto de red con líneas y nodos dinámicos ahora cubre las secciones azules y grises para una sensación de conexión continua.</description>
-      <pubDate>Wed, 15 Oct 2025 20:10:00 GMT</pubDate>
-      <guid>https://juandavidjd.github.io/ecoadsi/animated-bg</guid>
-    </item>
-
-    <item>
-      <title>🧠 Integración total de branding ADSI</title>
-      <link>https://juandavidjd.github.io/ecoadsi/</link>
-      <description>Se implementaron site.webmanifest y browserconfig.xml para una identidad ADSI multiplataforma completa.</description>
-      <pubDate>Wed, 15 Oct 2025 20:20:00 GMT</pubDate>
-      <guid>https://juandavidjd.github.io/ecoadsi/branding-completo</guid>
-    </item>
-
-  </channel>
-</rss>
+  <entry>
+    <title>Actualización visual y PWA completa</title>
+    <link href="https://juandavidjd.github.io/ecoadsi/"/>
+    <id>urn:uuid:adsi-update-2025-10-16</id>
+    <updated>2025-10-16T00:00:00Z</updated>
+    <summary>Se implementaron mejoras de animación, modo híbrido, favicon extendido y soporte PWA con cache offline.</summary>
+  </entry>
+</feed>
