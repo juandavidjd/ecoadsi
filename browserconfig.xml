@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="favicon-adsi.png"/>
+      <square150x150logo src="favicon-adsi.png"/>
+      <wide310x150logo src="favicon-adsi.png"/>
+      <square310x310logo src="favicon-adsi.png"/>
+      <TileColor>#0046FF</TileColor>
+    </tile>
+    <notification>
+      <polling-uri src="https://juandavidjd.github.io/ecoadsi/feed.xml"/>
+      <frequency>30</frequency>
+      <cycle>1</cycle>
+    </notification>
+  </msapplication>
+</browserconfig>

@@ -1,0 +1,51 @@
+{
+  "name": "Ecosistema ADSI",
+  "short_name": "ADSI",
+  "description": "Análisis, Diseño, Desarrollo e Implementación de Sistemas de Información. — Juntos, transformamos confianza en resultados.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0046FF",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "favicon-adsi.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-adsi.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Ir a Ecosistema ADSI",
+      "short_name": "Inicio",
+      "url": "/#hero",
+      "icons": [{ "src": "favicon-adsi.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Ver módulos",
+      "short_name": "Módulos",
+      "url": "/#ecosystem-intro",
+      "icons": [{ "src": "favicon-adsi.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Contacto ADSI",
+      "short_name": "Contacto",
+      "url": "/#contacto",
+      "icons": [{ "src": "favicon-adsi.png", "sizes": "96x96" }]
+    }
+  ]
+}
