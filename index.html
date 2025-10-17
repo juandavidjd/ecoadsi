@@ -16,9 +16,10 @@
   <meta name="msapplication-config" content="browserconfig.xml">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <meta name="theme-color" content="#0046FF">
-  <meta name="description" content="Ecosistema ADSI — Análisis, Diseño, Desarrollo e Implementación de Sistemas de Información.">
+  
+  <meta name="description" content="Ecosistema ADSI — Tecnología con propósito. Inteligencia que piensa, siente y actúa contigo. Transformamos confianza en resultados.">
   <meta property="og:title" content="Ecosistema ADSI">
-  <meta property="og:description" content="Transformamos confianza en resultados a través de soluciones tecnológicas integradas.">
+  <meta property="og:description" content="Ecosistema ADSI — Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
   <meta property="og:image" content="favicon-512.png">
   <meta property="og:url" content="https://juandavidjd.github.io/ecoadsi/">
   <meta name="twitter:card" content="summary_large_image">
@@ -101,6 +102,24 @@
     .detail-submenu-item:hover, .feedback-kpi-card:hover { background-color: rgba(0,224,255,0.1); border-color: #00E0FF; }
     .detail-submenu-item.active-detail, .feedback-kpi-card.active-detail { background-color: #0046FF; border-color: #00E0FF; }
 
+    /* --- MEJORA: Animación para el enlace del header --- */
+    .header-link-interactive {
+      transition: transform 0.3s ease, text-shadow 0.3s ease;
+      display: inline-block; /* Necesario para que transform funcione */
+    }
+    .header-link-interactive:hover {
+      transform: scale(1.03);
+      text-shadow: 0 0 8px rgba(0, 224, 255, 0.7);
+    }
+    
+    @media (max-width: 380px) {
+      .module-card h3 {
+        white-space: normal;
+        word-break: break-word;
+        font-size: 0.95rem;
+      }
+    }
+
     @media (max-width: 768px) {
       .sticky-nav-button span { display: none; }
       .sticky-nav-button { padding: 0.75rem; }
@@ -112,9 +131,9 @@
 
   <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
     <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="text-2xl font-bold font-poppins">
+      <a href="ecosistema_adsi_manifiesto.html" class="text-2xl font-bold font-poppins header-link-interactive">
         🧠 <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">Ecosistema ADSI</span>
-      </div>
+      </a>
       <a href="#contacto" class="bg-[#0046FF] text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all">
         Conecta
       </a>
@@ -126,7 +145,8 @@
     <div class="container mx-auto px-6 text-center content-z">
       <h1 class="text-5xl md:text-6xl font-extrabold">Ecosistema ADSI</h1>
       <h2 class="text-xl md:text-2xl mt-4 opacity-90">Análisis, Diseño, Desarrollo e Implementación de Sistemas de Información.</h2>
-      <p class="mt-8 text-2xl font-light text-cyan-accent text-shadow-cyan">“Juntos, transformamos confianza en resultados. Confianza entre datos, decisiones y personas.”</p>
+      <!-- --- MEJORA: Eslogan actualizado --- -->
+      <p class="mt-8 text-2xl font-light text-cyan-accent text-shadow-cyan">“Juntos, transformamos confianza en resultados.<br>Confianza entre datos, decisiones y personas.”</p>
     </div>
   </section>
 
@@ -176,8 +196,9 @@
         <p class="font-semibold text-gray-800">Juan David Jiménez Sierra</p>
         <p class="text-gray-500">Director de Estrategia Digital</p>
       </div>
+      <!-- --- MEJORA: Eslogan actualizado --- -->
       <div class="mt-12 text-cyan-accent text-shadow-cyan font-light text-lg">
-        “Juntos, transformamos confianza en resultados. Confianza entre datos, decisiones y personas.”
+        “Juntos, transformamos confianza en resultados.<br>Confianza entre datos, decisiones y personas.”
       </div>
     </div>
   </footer>
@@ -207,7 +228,6 @@
       const stickyNav = document.getElementById("sticky-module-nav");
       const stickyNavContent = document.getElementById("sticky-module-nav-content");
 
-      // --- FUNCIONES DE RENDERIZADO (RESTAURADAS) ---
       function updateDetailContent(moduleId, detailKey) {
         const detailData = modulesData[moduleId].details[detailKey];
         const contentDiv = document.getElementById('module-detail-content');
@@ -252,14 +272,12 @@
         document.querySelectorAll(".sticky-nav-button").forEach(b => b.classList.toggle("active", b.dataset.module === moduleId));
       }
 
-      // --- LÓGICA DE CREACIÓN DE ELEMENTOS Y EVENT LISTENERS ---
       Object.keys(modulesData).forEach(id => {
         const card = document.createElement("div");
         card.className = "module-card";
         card.dataset.module = id;
         card.innerHTML = `<div class='text-4xl'>${moduleIcons[id]}</div><h3 class='font-poppins font-semibold'>${moduleNames[id]}</h3>`;
         selector.appendChild(card);
-
         const stickyButton = document.createElement("button");
         stickyButton.className = "sticky-nav-button flex items-center gap-x-2";
         stickyButton.dataset.module = id;
@@ -268,28 +286,19 @@
       });
       
       function handleModuleSelection(moduleId) {
+        localStorage.setItem('lastActiveModule', moduleId);
         detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         updateModuleView(moduleId);
       }
 
-      selector.addEventListener("click", e => {
-        const card = e.target.closest(".module-card");
-        if (card) handleModuleSelection(card.dataset.module);
-      });
-
-      stickyNav.addEventListener("click", e => {
-        const button = e.target.closest(".sticky-nav-button");
-        if (button) handleModuleSelection(button.dataset.module);
-      });
+      selector.addEventListener("click", e => { const card = e.target.closest(".module-card"); if (card) handleModuleSelection(card.dataset.module); });
+      stickyNav.addEventListener("click", e => { const button = e.target.closest(".sticky-nav-button"); if (button) handleModuleSelection(button.dataset.module); });
       
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          stickyNav.classList.toggle("visible", entry.isIntersecting);
-        });
+        entries.forEach(entry => { stickyNav.classList.toggle("visible", entry.isIntersecting); });
       }, { threshold: 0.1 });
       observer.observe(detailsSection);
 
-      // --- ANIMACIONES DE CANVAS (RESTAURADAS) ---
       function setupCanvasAnimation(id, {nodeColor='rgba(0,224,255,0.5)', lineColor='rgba(0,224,255,0.2)', numNodes=70}={}) {
         const c = document.getElementById(id);
         if (!c) return;
@@ -317,13 +326,26 @@
           }
           requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', resize);
-        resize(); draw();
+        
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(resize, 200);
+        });
+
+        resize(); 
+        draw();
       }
 
       setupCanvasAnimation('network-canvas',{numNodes:80}); 
       setupCanvasAnimation('vision-canvas',{nodeColor:'rgba(255,255,255,0.4)',lineColor:'rgba(255,255,255,0.15)',numNodes:60}); 
       setupCanvasAnimation('gray-canvas',{nodeColor:'rgba(0,224,255,0.4)',lineColor:'rgba(0,224,255,0.15)',numNodes:65});
+
+      const lastModule = localStorage.getItem('lastActiveModule');
+      if (lastModule && modulesData[lastModule]) {
+          handleModuleSelection(lastModule);
+          setTimeout(() => detailsSection.scrollIntoView({ behavior: 'auto', block: 'start' }), 100);
+      }
     });
 
     if ("serviceWorker" in navigator) {
