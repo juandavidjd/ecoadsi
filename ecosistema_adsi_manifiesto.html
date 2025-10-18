@@ -57,8 +57,10 @@
     .content-z { position: relative; z-index: 2; }
 
     .module-card {
-      background: white; 
-      border: 2px solid transparent;
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 0.75rem; 
       padding: 1.25rem 1.5rem;
       transition: all 0.3s ease-in-out; 
@@ -75,7 +77,7 @@
     }
     .module-card.active {
         border-color: #00E0FF;
-        background-color: #0d4ed81a;
+        background: rgba(0, 122, 255, 0.15);
         transform: scale(1.03);
         box-shadow: 0 4px 15px rgba(0, 100, 255, 0.2);
     }
