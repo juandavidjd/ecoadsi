@@ -35,6 +35,7 @@
   <style>
     html { scroll-behavior: smooth; }
     body {
+      background-color: #F8F9FA;
       font-family: 'Montserrat', sans-serif;
       color: #2D2D2D;
       overflow-x: hidden;
@@ -56,10 +57,10 @@
     .content-z { position: relative; z-index: 2; }
 
     .module-card {
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.6);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 0.75rem; 
       padding: 1.25rem 1.5rem;
       transition: all 0.3s ease-in-out; 
@@ -73,10 +74,11 @@
     .module-card:hover {
         transform: translateY(-6px) scale(1.02);
         box-shadow: 0 10px 25px rgba(0, 70, 255, 0.15);
+        background: rgba(255, 255, 255, 0.75);
     }
     .module-card.active {
         border-color: #00E0FF;
-        background: rgba(0, 122, 255, 0.15);
+        background: rgba(255, 255, 255, 0.85);
         transform: scale(1.03);
         box-shadow: 0 4px 15px rgba(0, 100, 255, 0.2);
     }
@@ -142,7 +144,7 @@
     }
   </style>
 </head>
-<body class="bg-gray-100">
+<body class="antialiased">
 
   <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
     <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
@@ -164,7 +166,7 @@
     </div>
   </section>
 
-  <section id="ecosystem-intro" class="py-20 text-center relative overflow-hidden bg-gray-50">
+  <section id="ecosystem-intro" class="py-20 text-center relative overflow-hidden">
      <canvas class="animated-canvas" id="intro-canvas"></canvas>
     <div class="container mx-auto px-6 content-z">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800">🔹 Un sistema vivo que evoluciona contigo.</h2>
@@ -196,7 +198,7 @@
     </div>
   </section>
 
-  <footer id="contacto" class="py-20 text-center relative overflow-hidden bg-white">
+  <footer id="contacto" class="py-20 text-center relative overflow-hidden">
     <canvas class="animated-canvas" id="contact-canvas"></canvas>
     <div class="container mx-auto px-6 content-z">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800">📩 Conecta con el equipo ADSI</h2>
