@@ -186,7 +186,7 @@
      <canvas class="animated-canvas" id="intro-canvas"></canvas>
     <div class="container mx-auto px-6 content-z">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800">🔹 Un sistema vivo que evoluciona contigo.</h2>
-      <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-600 text-justify">
+      <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-600 text-center md:text-justify">
         El Ecosistema ADSI conecta estrategia, tecnología y acción en una red inteligente de resultados.
         Cada módulo se comunica en tiempo real, garantizando estabilidad, eficiencia y control total.
       </p>
@@ -207,7 +207,7 @@
     <canvas id="vision-canvas" class="animated-canvas"></canvas>
     <div class="container mx-auto px-6 text-center content-z">
       <h2 class="text-3xl md:text-4xl font-bold">✨ Más que tecnología, somos evolución estratégica.</h2>
-      <p class="mt-6 max-w-3xl mx-auto text-lg opacity-90 text-justify">
+      <p class="mt-6 max-w-3xl mx-auto text-lg opacity-90 text-center md:text-justify">
         El Ecosistema ADSI fusiona conocimiento, análisis y acción para crear crecimiento sostenible.
         Transformamos organizaciones en sistemas vivos que aprenden, mejoran y se expanden continuamente.
       </p>
@@ -218,7 +218,7 @@
     <canvas class="animated-canvas" id="contact-canvas"></canvas>
     <div class="container mx-auto px-6 content-z">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800">📩 Conecta con el equipo ADSI</h2>
-      <p class="mt-4 max-w-2xl mx-auto text-gray-600 text-justify">
+      <p class="mt-4 max-w-2xl mx-auto text-gray-600 text-center md:text-justify">
         Acompañamos tu evolución digital con soluciones inteligentes, medibles y orientadas a resultados.
       </p>
       <div class="mt-10 space-y-4">
@@ -263,7 +263,7 @@
       const stickyNav = document.getElementById("sticky-module-nav");
       const stickyNavContent = document.getElementById("sticky-module-nav-content");
       
-      let detailCarouselState = { interval: null, pauseTimeout: null, isRunning: false };
+      let detailCarouselState = { mainTimeout: null, subTimeout: null, pauseTimeout: null, isRunning: false };
       let isDetailsSectionVisible = false;
 
       area.insertAdjacentHTML('beforeend', `
@@ -291,7 +291,7 @@
         if (!contentDiv) return;
         contentDiv.style.opacity = 0;
         setTimeout(() => {
-          contentDiv.innerHTML = `<div class="text-center p-4 md:text-left"><div class="text-7xl mb-4 text-center md:text-left">${detailData.icon}</div><h3 class="text-2xl font-bold font-poppins text-cyan-accent mb-2">${detailKey.substring(2)}</h3><p class="text-lg opacity-90 text-justify">${detailData.description}</p></div>`;
+          contentDiv.innerHTML = `<div class="text-center p-4 md:text-left"><div class="text-7xl mb-4 text-center md:text-left">${detailData.icon}</div><h3 class="text-2xl font-bold font-poppins text-cyan-accent mb-2">${detailKey.substring(2)}</h3><p class="text-lg opacity-90 text-center md:text-justify">${detailData.description}</p></div>`;
           contentDiv.style.opacity = 1;
         }, 300);
         document.querySelectorAll('.detail-submenu-item').forEach(item => {
@@ -304,7 +304,7 @@
         if(!contentDiv) return;
         contentDiv.style.opacity = 0;
         setTimeout(() => {
-            contentDiv.innerHTML = `<h3 class="text-2xl font-bold font-poppins text-cyan-accent mb-2">${kpiKey}</h3><p class="text-lg opacity-90 text-justify">${data.description}</p>`;
+            contentDiv.innerHTML = `<h3 class="text-2xl font-bold font-poppins text-cyan-accent mb-2">${kpiKey}</h3><p class="text-lg opacity-90 text-center md:text-justify">${data.description}</p>`;
             contentDiv.style.opacity = 1;
         }, 300);
         document.querySelectorAll('.feedback-kpi-card').forEach(card => {
@@ -313,18 +313,16 @@
       }
       
       function stopDetailCarousel(manual = false) {
-        clearTimeout(detailCarouselState.interval);
+        clearTimeout(detailCarouselState.mainTimeout);
+        clearTimeout(detailCarouselState.subTimeout);
         clearTimeout(detailCarouselState.pauseTimeout);
-        detailCarouselState.interval = null;
-        detailCarouselState.pauseTimeout = null;
         detailCarouselState.isRunning = false;
         if(manual) {
             pauseIndicator.classList.add('hidden');
         }
       }
 
-      function startDetailCarousel(moduleId, subItems, isFeedback = false, startIndex = 0) {
-        stopDetailCarousel(true);
+      function startSubCarousel(moduleId, subItems, isFeedback = false, startIndex = 0) {
         detailCarouselState.isRunning = true;
         let currentIndex = startIndex;
         let rounds = 0;
@@ -363,12 +361,11 @@
                 return;
             }
             
-            detailCarouselState.interval = setTimeout(advance, 8000);
+            detailCarouselState.subTimeout = setTimeout(advance, 8000);
         };
-        
         advance();
       }
-
+      
       function updateModuleView(moduleId, autoPlay = false, isUserInitiated = false) {
         const data = modulesData[moduleId];
         area.style.opacity = 0;
@@ -381,7 +378,7 @@
         setTimeout(() => {
           let subItems;
           if (data.isFeedback) {
-            area.innerHTML = `<div class="text-center w-full"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='max-w-3xl mx-auto text-lg mb-8 opacity-90 text-justify'>${data.text}</p><div id="feedback-detail-content" class="min-h-[120px] bg-black/20 p-6 rounded-lg mb-8 text-left"><p class="text-xl opacity-70 text-center">Selecciona un indicador.</p></div><div id="feedback-kpi-selector" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">${Object.keys(data.details).map(key => `<div class="feedback-kpi-card rounded-lg p-4 font-semibold text-center" data-key="${key}">${key}</div>`).join('')}</div></div>`;
+            area.innerHTML = `<div class="text-center w-full"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='max-w-3xl mx-auto text-lg mb-8 opacity-90 text-center md:text-justify'>${data.text}</p><div id="feedback-detail-content" class="min-h-[120px] bg-black/20 p-6 rounded-lg mb-8 text-left"><p class="text-xl opacity-70 text-center">Selecciona un indicador.</p></div><div id="feedback-kpi-selector" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">${Object.keys(data.details).map(key => `<div class="feedback-kpi-card rounded-lg p-4 font-semibold text-center" data-key="${key}">${key}</div>`).join('')}</div></div>`;
             const kpiSelector = document.getElementById('feedback-kpi-selector');
             subItems = Array.from(kpiSelector.querySelectorAll('.feedback-kpi-card'));
             kpiSelector.addEventListener('click', e => { 
@@ -391,9 +388,11 @@
                     updateFeedbackDetail(card.dataset.key, data.details[card.dataset.key]);
                 } 
             });
-            if(autoPlay) startDetailCarousel(moduleId, subItems, true);
+            if(autoPlay) {
+                detailCarouselState.mainTimeout = setTimeout(() => startSubCarousel(moduleId, subItems, true), 8000);
+            }
           } else {
-            area.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start"><div id="module-detail-content" class="md:col-span-2 text-left"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='text-lg opacity-90 text-justify'>${data.text}</p></div><div id="module-submenu" class="md:col-span-1 space-y-3">${Object.keys(data.details).map(key => `<div class="detail-submenu-item rounded-lg p-4 text-cyan-accent font-semibold text-lg" data-key="${key}">${key}</div>`).join('')}</div></div>`;
+            area.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start"><div id="module-detail-content" class="md:col-span-2 text-left"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='text-lg opacity-90 text-center md:text-justify'>${data.text}</p></div><div id="module-submenu" class="md:col-span-1 space-y-3">${Object.keys(data.details).map(key => `<div class="detail-submenu-item rounded-lg p-4 text-cyan-accent font-semibold text-lg" data-key="${key}">${key}</div>`).join('')}</div></div>`;
             const submenu = document.getElementById('module-submenu');
             subItems = Array.from(submenu.querySelectorAll('.detail-submenu-item'));
             submenu.addEventListener('click', e => { 
@@ -403,7 +402,9 @@
                     updateDetailContent(moduleId, subItem.dataset.key);
                 } 
             });
-            if(autoPlay) startDetailCarousel(moduleId, subItems, false);
+             if(autoPlay) {
+                detailCarouselState.mainTimeout = setTimeout(() => startSubCarousel(moduleId, subItems, false), 8000);
+            }
           }
           area.style.opacity = 1;
         }, 300);
