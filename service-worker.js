@@ -1,17 +1,19 @@
 // Define a unique name for the cache
-const CACHE_NAME = 'ecosistema-adsi-cache-v2';
+const CACHE_NAME = 'ecosistema-adsi-cache-v5';
+const OFFLINE_URL = 'offline.html';
 
 // List all the essential files that need to be cached for offline access
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/ecosistema_adsi_manifiesto.html',
-  '/site.webmanifest',
-  '/browserconfig.xml',
-  '/favicon.ico',
-  '/favicon-150.jpg',
-  '/favicon-192.jpg',
-  '/favicon-512.jpg',
+  'index.html',
+  'ecosistema_adsi_manifiesto.html',
+  'site.webmanifest',
+  'browserconfig.xml',
+  'favicon.ico',
+  'favicon-150.jpg',
+  'favicon-192.jpg',
+  'favicon-512.jpg',
+  'offline.html',
   'https://cdn.tailwindcss.com',
   'https://cdn.jsdelivr.net/npm/chart.js',
   'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Poppins:wght@600;800&display=swap',
@@ -20,52 +22,18 @@ const urlsToCache = [
 
 // Installation event: triggered when the service worker is first installed
 self.addEventListener('install', event => {
-  // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache opened, caching essential assets.');
+        console.log('Cache opened, caching essential assets for offline use.');
         return cache.addAll(urlsToCache);
       })
   );
-});
-
-// Fetch event: triggered for every request the page makes.
-// It uses a cache-then-network strategy.
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response from cache
-        if (response) {
-          return response;
-        }
-
-        // Not in cache - fetch from network and cache the response
-        return fetch(event.request).then(
-          response => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response because it's a stream and can only be consumed once.
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
-      })
-  );
+  self.skipWaiting();
 });
 
 // Activation event: triggered when the service worker is activated.
-// It cleans up old caches.
+// This is a good time to clean up old caches.
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -80,4 +48,44 @@ self.addEventListener('activate', event => {
       );
     })
   );
+  return self.clients.claim();
 });
+
+// Fetch event: triggered for every request the page makes.
+self.addEventListener('fetch', event => {
+  // We only want to handle navigation requests for HTML pages.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      (async () => {
+        try {
+          // First, try to use the navigation preload response if it's supported.
+          const preloadResponse = await event.preloadResponse;
+          if (preloadResponse) {
+            return preloadResponse;
+          }
+
+          // Always try the network first for navigation.
+          const networkResponse = await fetch(event.request);
+          return networkResponse;
+        } catch (error) {
+          // The catch is triggered if the network fails.
+          console.log('Fetch failed; returning offline page instead.', error);
+
+          const cache = await caches.open(CACHE_NAME);
+          const cachedResponse = await cache.match(OFFLINE_URL);
+          return cachedResponse;
+        }
+      })()
+    );
+  } else {
+    // For non-navigation requests (like images, CSS, JS), use a cache-first strategy.
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          // Return the cached response if found, otherwise fetch from network.
+          return response || fetch(event.request);
+        })
+    );
+  }
+});
+

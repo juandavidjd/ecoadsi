@@ -8,6 +8,7 @@
   <!-- Tailwind CSS y Fuentes -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <style>
     body {
@@ -29,23 +30,23 @@
       
       <!-- Icono SVG de "Sin Conexión" -->
       <div class="mb-6">
-        <svg class="w-20 h-20 mx-auto text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636M12 18.5a.5.5 0 01-1 0V5.5a.5.5 0 011 0v13zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          <line x1="1" y1="1" x2="23" y2="23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" transform="rotate(90 12 12)"></line>
+        <svg class="w-20 h-20 mx-auto text-cyan-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M1.396 3.396l18.208 18.208" />
         </svg>
       </div>
 
       <h1 class="text-3xl md:text-4xl font-extrabold mb-4">Estás sin conexión</h1>
       <p class="text-lg opacity-90 mb-8">
-        No hemos podido cargar esta página porque no tienes conexión a internet. Por favor, revisa tu red e inténtalo de nuevo.
+        Parece que no hay conexión a internet. El contenido no pudo ser cargado. Por favor, verifica tu red.
       </p>
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <button onclick="window.location.reload();" class="bg-cyan-400 text-gray-900 font-bold px-8 py-3 rounded-full hover:bg-cyan-300 transition-all duration-300 transform hover:scale-105">
-          Intentar de nuevo
+          Reintentar
         </button>
-        <a href="/index.html" class="bg-white/20 text-white font-bold px-8 py-3 rounded-full hover:bg-white/30 transition-all duration-300">
-          Ir al inicio
+        <a href="/ecoadsi/index.html" class="bg-white/20 text-white font-bold px-8 py-3 rounded-full hover:bg-white/30 transition-all duration-300">
+          Ir a Inicio
         </a>
       </div>
 
@@ -55,3 +56,4 @@
 
 </body>
 </html>
+
