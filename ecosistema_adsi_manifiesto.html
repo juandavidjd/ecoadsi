@@ -221,7 +221,7 @@
   </footer>
 
   <div id="sticky-module-nav">
-    <div id="sticky-module-nav-content" class="container mx-auto px-6 flex justify-center items-center gap-x-2 md:gap-x-4">
+    <div id="sticky-module-nav-content" class="container mx-auto px-4 flex justify-between items-center">
     </div>
   </div>
 
@@ -237,6 +237,7 @@
         retroalimentacion: { title: "🔁 Cada interacción mejora el sistema.", text: "El Ciclo de Retroalimentación ADSI mide métricas clave, identifica oportunidades y ajusta estrategias en tiempo real para impulsar un crecimiento sostenido.", isFeedback: true, details: { "📊 Tráfico digital": { description: "Mide el volumen y la calidad de los usuarios que llegan a tus plataformas digitales, permitiendo evaluar el alcance de las estrategias de marketing y la visibilidad de la marca.", duration: 5000 }, "💬 Engagement": { description: "Analiza cómo interactúan los usuarios con tu contenido. Un alto engagement indica un contenido relevante y una comunidad activa, fortaleciendo la lealtad del cliente.", duration: 5000 }, "🎯 Conversión": { description: "Es el indicador clave del éxito. Mide el porcentaje de usuarios que realizan una acción deseada, como una compra o un registro, validando la efectividad del embudo de ventas.", duration: 5000 }, "🤝 Satisfacción": { description: "Mide el grado de contentamiento del cliente con el producto o servicio a través de encuestas y calificaciones, siendo vital para la retención y la mejora continua.", duration: 5000 }, "⚙️ Eficiencia": { description: "Evalúa el rendimiento de los procesos internos, midiendo la relación entre los recursos invertidos y los resultados obtenidos para maximizar la rentabilidad operativa.", duration: 5000 }}}
       };
       
+      const moduleKeys = Object.keys(modulesData);
       const moduleIcons = { cerebro: "🧠", pasarela: "💳", catalogo: "🧱", operacion: "⚙️", envios: "🚚", retroalimentacion: "🔄" };
       const moduleNames = { cerebro: "Cerebro", pasarela: "Pasarela", catalogo: "Catálogo", operacion: "Operación", envios: "Envíos", retroalimentacion: "Retroalimentación" };
       
@@ -245,7 +246,7 @@
       const detailsSection = document.getElementById("module-details");
       const stickyNav = document.getElementById("sticky-module-nav");
       const stickyNavContent = document.getElementById("sticky-module-nav-content");
-      let detailCarouselInterval = null;
+      let detailCarouselState = { interval: null, isRunning: false };
 
       function updateDetailContent(moduleId, detailKey) {
         const detailData = modulesData[moduleId].details[detailKey];
@@ -275,17 +276,22 @@
       }
       
       function stopDetailCarousel() {
-        if (detailCarouselInterval) {
-            clearInterval(detailCarouselInterval);
-            detailCarouselInterval = null;
+        if (detailCarouselState.interval) {
+            clearTimeout(detailCarouselState.interval);
+            detailCarouselState.interval = null;
+            detailCarouselState.isRunning = false;
         }
       }
 
       function startDetailCarousel(moduleId, subItems, isFeedback = false) {
         stopDetailCarousel();
+        detailCarouselState.isRunning = true;
         let currentIndex = 0;
+        let rounds = 0;
 
         const advance = () => {
+            if (!detailCarouselState.isRunning) return;
+
             const currentItem = subItems[currentIndex];
             if (!isFeedback) {
                 updateDetailContent(moduleId, currentItem.dataset.key);
@@ -296,20 +302,24 @@
             const detailData = modulesData[moduleId].details[currentItem.dataset.key];
             const nextDuration = detailData.duration;
             
-            currentIndex = (currentIndex + 1) % subItems.length;
+            currentIndex++;
+            if (currentIndex >= subItems.length) {
+                currentIndex = 0;
+                rounds++;
+            }
+
+            if (rounds >= 2) {
+                const currentModuleIndex = moduleKeys.indexOf(moduleId);
+                const nextModuleIndex = (currentModuleIndex + 1) % moduleKeys.length;
+                const nextModuleId = moduleKeys[nextModuleIndex];
+                handleModuleSelection(nextModuleId);
+                return;
+            }
             
-            detailCarouselInterval = setTimeout(advance, nextDuration);
+            detailCarouselState.interval = setTimeout(advance, nextDuration);
         };
         
-        // Initial call
-        const firstItem = subItems[0];
-        const firstDuration = modulesData[moduleId].details[firstItem.dataset.key].duration;
-        if (!isFeedback) {
-            updateDetailContent(moduleId, firstItem.dataset.key);
-        } else {
-            updateFeedbackDetail(firstItem.dataset.key, modulesData[moduleId].details[firstItem.dataset.key]);
-        }
-        detailCarouselInterval = setTimeout(advance, firstDuration);
+        advance();
       }
 
       function updateModuleView(moduleId) {
@@ -350,7 +360,7 @@
         document.querySelectorAll(".sticky-nav-button").forEach(b => b.classList.toggle("active", b.dataset.module === moduleId));
       }
 
-      Object.keys(modulesData).forEach(id => {
+      moduleKeys.forEach(id => {
         const card = document.createElement("div");
         card.className = "module-card";
         card.dataset.module = id;
@@ -359,7 +369,7 @@
         const stickyButton = document.createElement("button");
         stickyButton.className = "sticky-nav-button flex items-center gap-x-2";
         stickyButton.dataset.module = id;
-        stickyButton.innerHTML = `<span class="sticky-nav-icon">${moduleIcons[id]}</span><span class="sticky-nav-text font-semibold">${moduleNames[id]}</span>`;
+        stickyButton.innerHTML = `<span class="sticky-nav-icon text-2xl">${moduleIcons[id]}</span><span class="sticky-nav-text font-semibold">${moduleNames[id]}</span>`;
         stickyNavContent.appendChild(stickyButton);
       });
       
@@ -448,7 +458,6 @@
       const lastModule = localStorage.getItem('lastActiveModule');
       if (lastModule && modulesData[lastModule]) {
           handleModuleSelection(lastModule);
-          setTimeout(() => detailsSection.scrollIntoView({ behavior: 'auto', block: 'start' }), 100);
       }
     });
 
