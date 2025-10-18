@@ -40,24 +40,37 @@
         .text-brand-blue { color: #0046FF; }
         .bg-brand-blue { background-color: #0046FF; }
         .border-brand-blue { border-color: #0046FF; }
-        .ring-brand-blue { --tw-ring-color: #0046FF; }
-        .accent-gradient { background: linear-gradient(90deg, #00E0FF, #0046FF); }
-        .philosophy-tab.active { border-color: #0046FF; background-color: #0046FF; color: white; }
         
+        .philosophy-tab {
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+        }
+        .philosophy-tab.active { 
+            border-color: #0046FF; 
+            background-color: #0046FF; 
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0, 70, 255, 0.25);
+        }
+        .philosophy-tab.inactive {
+             opacity: 0.6;
+        }
+
         .module-card {
             display: flex;
             align-items: center;
             gap: 1rem;
             text-align: left;
-        }
-        .module-card h4 {
-            white-space: nowrap;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
         }
         .module-card.active { 
             border-color: #00E0FF; 
             background-color: #0d4ed81a; 
             transform: scale(1.03);
             box-shadow: 0 4px 15px rgba(0, 100, 255, 0.2);
+            opacity: 1;
+        }
+        .module-card.inactive {
+            opacity: 0.6;
         }
         #module-display {
             transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
@@ -68,19 +81,15 @@
         html { scroll-behavior: smooth; }
         
         section { 
-            transition: opacity 0.5s ease-in-out;
             position: relative;
             overflow: hidden;
         }
         .animated-canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 1;
         }
         .content-z {
-            position: relative;
-            z-index: 2;
+            position: relative; z-index: 2;
         }
         
         .header-link-interactive {
@@ -91,7 +100,6 @@
           transform: scale(1.03);
           text-shadow: 0 0 8px rgba(0, 70, 255, 0.7);
         }
-        /* Estilos para el menú móvil */
         #mobile-menu {
             transform: translateX(100%);
             transition: transform 0.3s ease-in-out;
@@ -99,7 +107,6 @@
         #mobile-menu.open {
             transform: translateX(0);
         }
-        /* Estilos para ADN de Marca */
         .dna-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
         }
@@ -112,7 +119,6 @@
             opacity: 0.6;
         }
         
-        /* Animación de pulso para enlaces importantes */
         @keyframes subtle-pulse {
             0%, 100% {
                 transform: scale(1);
@@ -125,7 +131,7 @@
         }
         .pulsing-link {
             animation: subtle-pulse 2.5s infinite ease-in-out;
-            display: inline-block; /* Necesario para que transform funcione */
+            display: inline-block;
         }
     </style>
 </head>
@@ -141,7 +147,6 @@
                 <a href="#impacto" class="hover:text-brand-blue transition">Impacto</a>
                 <a href="#vision" class="hover:text-brand-blue transition">Visión</a>
             </nav>
-            <!-- Botón de Menú Móvil -->
             <div class="md:hidden">
                 <button id="hamburger-button" class="text-gray-800 focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -150,7 +155,6 @@
         </div>
     </header>
 
-    <!-- Panel de Menú Móvil -->
     <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 p-6 md:hidden">
         <button id="close-menu-button" class="absolute top-6 right-6 text-gray-600 text-3xl">&times;</button>
         <nav class="mt-8 flex flex-col space-y-4">
@@ -183,13 +187,13 @@
                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Nuestra filosofía se basa en una convicción clara: la tecnología solo tiene valor cuando entiende, amplifica y evoluciona con el ser humano.</p>
                 
                 <div class="mt-12 max-w-4xl mx-auto">
-                    <div id="philosophy-tabs-container" class="flex flex-col sm:flex-row justify-center border-b-2 border-gray-200">
-                        <button data-tab="origen" class="philosophy-tab py-3 px-6 font-semibold border-b-4 transition duration-300">1. Origen</button>
-                        <button data-tab="proposito" class="philosophy-tab py-3 px-6 font-semibold border-b-4 transition duration-300">2. Propósito</button>
-                        <button data-tab="filosofia-core" class="philosophy-tab py-3 px-6 font-semibold border-b-4 transition duration-300">3. Filosofía</button>
+                    <div id="philosophy-tabs-container" class="flex flex-col sm:flex-row justify-center border-b-2 border-gray-200 cursor-pointer">
+                        <button data-index="0" class="philosophy-tab py-3 px-6 font-semibold border-b-4">1. Origen</button>
+                        <button data-index="1" class="philosophy-tab py-3 px-6 font-semibold border-b-4">2. Propósito</button>
+                        <button data-index="2" class="philosophy-tab py-3 px-6 font-semibold border-b-4">3. Filosofía</button>
                     </div>
-                    <div id="philosophy-content" class="mt-8 text-left text-lg text-gray-700 leading-relaxed min-h-[250px] sm:min-h-[200px]">
-                        <!-- Contenido y navegación de filosofía se inyectan aquí -->
+                    <div id="philosophy-content" class="mt-8 text-left text-lg text-gray-700 leading-relaxed min-h-[200px] sm:min-h-[150px]">
+                        <!-- Contenido se inyecta aquí -->
                     </div>
                 </div>
             </div>
@@ -206,7 +210,7 @@
                 <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                     <div id="modules-grid" class="md:col-span-1 grid grid-cols-1 gap-4">
                     </div>
-                    <div id="module-display" class="md:col-span-2 bg-white p-6 sm:p-8 rounded-2xl shadow-lg min-h-[300px] flex flex-col justify-center">
+                    <div id="module-display" class="md:col-span-2 bg-white p-6 sm:p-8 rounded-2xl shadow-lg min-h-[300px] flex flex-col justify-center transition-opacity duration-300">
                         <p class="text-xl text-center text-gray-400">Selecciona un módulo para ver su función.</p>
                     </div>
                 </div>
@@ -217,7 +221,7 @@
             <canvas class="animated-canvas" id="adn-canvas"></canvas>
             <div class="container mx-auto px-6 text-center content-z">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">ADN de Marca</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Toca un pilar para iniciar un recorrido por los cinco elementos que definen nuestro ecosistema.</p>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Los cinco pilares que definen cada algoritmo, proceso e interacción dentro del ecosistema.</p>
                 <div id="dna-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
                 </div>
             </div>
@@ -301,109 +305,114 @@
                 }
             };
 
-            // --- Lógica de la Sección de Filosofía ---
-            const philosophyTabsContainer = document.getElementById('philosophy-tabs-container');
+            // --- Lógica General de Carrusel ---
+            function createCarousel(container, items, contentUpdater, intervalTime = 5000) {
+                let interval;
+                let isRunning = false;
+                
+                function startCarousel(startIndex) {
+                    clearInterval(interval);
+                    let currentIndex = startIndex;
+                    isRunning = true;
+
+                    function showNext() {
+                        items.forEach((item, index) => {
+                            item.classList.toggle('active', index === currentIndex);
+                            item.classList.toggle('inactive', index !== currentIndex);
+                        });
+
+                        contentUpdater(currentIndex);
+                        
+                        currentIndex = (currentIndex + 1) % items.length; // Loop infinitely
+                    }
+                    
+                    showNext();
+                    interval = setInterval(showNext, intervalTime);
+                }
+
+                function stopCarousel() {
+                    clearInterval(interval);
+                    isRunning = false;
+                    items.forEach(item => item.classList.remove('active', 'inactive'));
+                    contentUpdater(-1); // Reset content display
+                }
+
+                container.addEventListener('click', e => {
+                    const item = e.target.closest('[data-index]');
+                    if (item) {
+                        if (isRunning) {
+                            stopCarousel();
+                        } else {
+                            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            setTimeout(() => startCarousel(parseInt(item.dataset.index)), 300);
+                        }
+                    }
+                });
+            }
+
+            // --- Sección de Filosofía ---
+            const philosophyContainer = document.getElementById('philosophy-tabs-container');
+            const philosophyTabs = Array.from(philosophyContainer.querySelectorAll('.philosophy-tab'));
             const philosophyContent = document.getElementById('philosophy-content');
             const philosophyKeys = Object.keys(DATA.philosophy);
 
-            function updatePhilosophyView(tabName, isInitial = false) {
-                document.querySelectorAll('.philosophy-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === tabName));
-                
-                let textContainer = philosophyContent.querySelector('#philosophy-text-container');
-                if (textContainer) {
-                    textContainer.style.opacity = 0;
-                    textContainer.style.transform = 'translateY(10px)';
-                }
-
+            const philosophyContentUpdater = (index) => {
+                philosophyContent.style.opacity = 0;
                 setTimeout(() => {
-                    const currentIndex = philosophyKeys.indexOf(tabName);
-                    const prevKey = currentIndex > 0 ? philosophyKeys[currentIndex - 1] : null;
-                    const nextKey = currentIndex < philosophyKeys.length - 1 ? philosophyKeys[currentIndex + 1] : null;
-
-                    philosophyContent.innerHTML = `
-                        <div class="transition-all duration-500 opacity-0 transform translate-y-3" id="philosophy-text-container">
-                            <p>${DATA.philosophy[tabName]}</p>
-                            <div class="mt-6 flex justify-between items-center">
-                                ${prevKey ? `<button data-tab="${prevKey}" class="philosophy-nav-button text-brand-blue font-semibold hover:opacity-75 transition">← Anterior</button>` : '<div></div>'}
-                                ${nextKey ? `<button data-tab="${nextKey}" class="philosophy-nav-button text-brand-blue font-semibold hover:opacity-75 transition">Siguiente →</button>` : '<div></div>'}
-                            </div>
-                        </div>`;
-                    
-                    setTimeout(() => {
-                        philosophyContent.querySelector('#philosophy-text-container').style.opacity = 1;
-                        philosophyContent.querySelector('#philosophy-text-container').style.transform = 'translateY(0)';
-                    }, 50);
-
-                    if (!isInitial) {
-                         setTimeout(() => philosophyContent.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+                    if (index === -1) {
+                        philosophyContent.innerHTML = `<p class="text-center text-gray-500">Toca un tema para iniciar el recorrido.</p>`;
+                    } else {
+                        const key = philosophyKeys[index];
+                        philosophyContent.innerHTML = `<p>${DATA.philosophy[key]}</p>`;
                     }
+                    philosophyContent.style.opacity = 1;
                 }, 300);
-            }
-
-            philosophyTabsContainer.addEventListener('click', e => e.target.tagName === 'BUTTON' && e.target.dataset.tab && updatePhilosophyView(e.target.dataset.tab));
-            philosophyContent.addEventListener('click', e => e.target.classList.contains('philosophy-nav-button') && updatePhilosophyView(e.target.dataset.tab));
-            updatePhilosophyView('origen', true);
-
-            // --- Lógica de la Sección de Módulos ---
+            };
+            
+            philosophyContent.innerHTML = `<p class="text-center text-gray-500">Toca un tema para iniciar el recorrido.</p>`;
+            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, 8000); // Increased time to 8 seconds
+            
+            // --- Sección de Módulos ---
             const modulesGrid = document.getElementById('modules-grid');
             const moduleDisplay = document.getElementById('module-display');
             const moduleKeys = Object.keys(DATA.modules);
+            let moduleCards = [];
 
-            function updateModuleView(moduleKey) {
-                const module = DATA.modules[moduleKey];
-                document.querySelectorAll('.module-card').forEach(c => c.classList.toggle('active', c.dataset.moduleKey === moduleKey));
-                
-                moduleDisplay.style.opacity = 0;
-                moduleDisplay.style.transform = 'translateY(20px)';
-
-                setTimeout(() => {
-                    const currentIndex = moduleKeys.indexOf(moduleKey);
-                    const prevKey = currentIndex > 0 ? moduleKeys[currentIndex - 1] : null;
-                    const nextKey = currentIndex < moduleKeys.length - 1 ? moduleKeys[currentIndex + 1] : null;
-                    
-                     moduleDisplay.innerHTML = `
-                        <div class="flex-grow">
-                             ${ (moduleKey === 'retroalimentacion') ? `
-                                <div class="text-center md:text-left flex flex-col h-full">
-                                    <div class="text-5xl sm:text-6xl">${module.icon}</div>
-                                    <h3 class="mt-3 text-2xl sm:text-3xl font-bold text-gray-900">${module.name}</h3>
-                                    <p class="mt-2 text-base sm:text-lg text-gray-600 flex-grow">${module.func}</p>
-                                </div>
-                            ` : `
-                                <div class="text-center md:text-left">
-                                    <div class="text-6xl">${module.icon}</div>
-                                    <h3 class="mt-4 text-3xl font-bold text-gray-900">${module.name}</h3>
-                                    <p class="mt-2 text-xl text-gray-600">${module.func}</p>
-                                </div>
-                            `}
-                        </div>
-                        <div class="mt-6 flex justify-between items-center">
-                            ${prevKey ? `<button data-module="${prevKey}" class="module-nav-button text-brand-blue font-semibold hover:opacity-75 transition">← Anterior</button>` : '<div></div>'}
-                            ${nextKey ? `<button data-module="${nextKey}" class="module-nav-button text-brand-blue font-semibold hover:opacity-75 transition">Siguiente →</button>` : '<div></div>'}
-                        </div>`;
-
-                    moduleDisplay.style.opacity = 1;
-                    moduleDisplay.style.transform = 'translateY(0)';
-                    
-                    setTimeout(() => moduleDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-                }, 400);
-            }
-            
-            moduleKeys.forEach(key => {
+            moduleKeys.forEach((key, index) => {
                 const card = document.createElement('div');
-                card.className = 'module-card border-2 p-4 rounded-xl cursor-pointer transition';
-                card.dataset.moduleKey = key;
+                card.className = 'module-card border-2 p-4 rounded-xl cursor-pointer';
+                card.dataset.index = index;
                 card.innerHTML = `<div class="text-4xl pointer-events-none">${DATA.modules[key].icon}</div><h4 class="font-semibold text-lg pointer-events-none">${DATA.modules[key].name}</h4>`;
                 modulesGrid.appendChild(card);
+                moduleCards.push(card);
             });
 
-            modulesGrid.addEventListener('click', e => e.target.closest('.module-card') && updateModuleView(e.target.closest('.module-card').dataset.moduleKey));
-            moduleDisplay.addEventListener('click', e => e.target.classList.contains('module-nav-button') && updateModuleView(e.target.dataset.module));
+            const moduleContentUpdater = (index) => {
+                moduleDisplay.style.opacity = 0;
+                moduleDisplay.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    if (index === -1) {
+                         moduleDisplay.innerHTML = `<p class="text-xl text-center text-gray-400">Selecciona un módulo para ver su función.</p>`;
+                    } else {
+                        const key = moduleKeys[index];
+                        const module = DATA.modules[key];
+                        moduleDisplay.innerHTML = `
+                            <div class="text-center md:text-left">
+                                <div class="text-6xl">${module.icon}</div>
+                                <h3 class="mt-4 text-3xl font-bold text-gray-900">${module.name}</h3>
+                                <p class="mt-2 text-xl text-gray-600">${module.func}</p>
+                            </div>
+                        `;
+                    }
+                    moduleDisplay.style.opacity = 1;
+                    moduleDisplay.style.transform = 'translateY(0px)';
+                }, 400);
+            };
 
+            createCarousel(modulesGrid, moduleCards, moduleContentUpdater);
 
-            // --- Lógica de la Sección ADN de Marca ---
+            // --- Sección ADN de Marca ---
             const dnaGrid = document.getElementById('dna-grid');
-            let dnaInterval;
             let dnaCards = [];
 
             DATA.dna.forEach((pillar, index) => {
@@ -418,41 +427,11 @@
                 dnaCards.push(item);
             });
 
-            function startDnaCarousel(startIndex) {
-                clearInterval(dnaInterval);
-                let currentIndex = startIndex;
+            createCarousel(dnaGrid, dnaCards, () => {});
 
-                function showNext() {
-                    dnaCards.forEach((card, index) => {
-                        card.classList.toggle('active', index === currentIndex);
-                        card.classList.toggle('inactive', index !== currentIndex);
-                    });
-                    
-                    currentIndex = (currentIndex + 1);
-                    if (currentIndex >= dnaCards.length) {
-                         clearInterval(dnaInterval);
-                         setTimeout(() => {
-                             dnaCards.forEach(card => card.classList.remove('active', 'inactive'));
-                         }, 1000);
-                    }
-                }
-                
-                showNext(); 
-                dnaInterval = setInterval(showNext, 5000);
-            }
-
-            dnaGrid.addEventListener('click', e => {
-                const card = e.target.closest('.dna-card');
-                if(card) {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(()=> startDnaCarousel(parseInt(card.dataset.index)), 300);
-                }
-            });
-
-
+            // --- Gráfico de Impacto ---
             const impactChartCtx = document.getElementById('impactChart').getContext('2d');
             let impactChart;
-
             const createChart = () => {
                 if (impactChart) impactChart.destroy();
                 impactChart = new Chart(impactChartCtx, {
@@ -460,23 +439,22 @@
                     options: { indexAxis: 'y', maintainAspectRatio: false, responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` +${c.raw}%` } } }, scales: { x: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.05)' }, ticks: { callback: (v) => v + '%' } }, y: { grid: { display: false } } }, animation: { duration: 1500, easing: 'easeInOutQuart' } }
                 });
             }
-            
             const chartObserver = new IntersectionObserver((entries) => {
                 if(entries[0].isIntersecting){ createChart(); chartObserver.unobserve(document.getElementById('impacto')); }
             }, { threshold: 0.5 });
             chartObserver.observe(document.getElementById('impacto'));
             
+            // --- Menú Móvil ---
             const hamburgerButton = document.getElementById('hamburger-button');
             const mobileMenu = document.getElementById('mobile-menu');
             const closeMenuButton = document.getElementById('close-menu-button');
             const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
-
             function toggleMenu() { mobileMenu.classList.toggle('open'); }
-
             hamburgerButton.addEventListener('click', toggleMenu);
             closeMenuButton.addEventListener('click', toggleMenu);
             mobileMenuLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.contains('open') && toggleMenu()));
 
+            // --- Animación de Canvas ---
             function setupCanvasAnimation(canvasId, options) {
                 const canvas = document.getElementById(canvasId);
                 if (!canvas) return;
