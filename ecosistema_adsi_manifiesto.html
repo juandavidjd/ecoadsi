@@ -131,6 +131,20 @@
       text-shadow: 0 0 8px rgba(0, 224, 255, 0.7);
     }
     
+    @keyframes subtle-pulse {
+        0%, 100% {
+            transform: scale(1);
+            text-shadow: 0 0 4px rgba(0, 224, 255, 0.4);
+        }
+        50% {
+            transform: scale(1.05);
+            text-shadow: 0 0 12px rgba(0, 224, 255, 0.8);
+        }
+    }
+    .pulsing-link {
+        animation: subtle-pulse 2.5s infinite ease-in-out;
+    }
+
     @media (max-width: 380px) {
       .module-card h3 {
         white-space: normal;
@@ -150,8 +164,8 @@
 
   <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
     <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
-      <a href="index.html" class="text-3xl sm:text-2xl font-bold font-poppins header-link-interactive">
-        🧠<span class="hidden sm:inline bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">ADSI</span>
+      <a href="index.html" class="text-2xl font-bold font-poppins header-link-interactive pulsing-link">
+        🧠<span class="bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">ADSI</span>
       </a>
       <a href="#contacto" class="bg-[#0046FF] text-white px-5 py-2 sm:px-6 rounded-full hover:bg-opacity-90 transition-all text-sm sm:text-base">
         Conecta
@@ -265,7 +279,7 @@
         entries.forEach(entry => {
             isDetailsSectionVisible = entry.isIntersecting;
             if (!isDetailsSectionVisible) {
-                stopDetailCarousel();
+                stopDetailCarousel(true);
             }
         });
       }, { threshold: 0.1 });
@@ -355,11 +369,15 @@
         advance();
       }
 
-      function updateModuleView(moduleId, autoPlay = false) {
+      function updateModuleView(moduleId, autoPlay = false, isUserInitiated = false) {
         const data = modulesData[moduleId];
         area.style.opacity = 0;
         stopDetailCarousel(true);
         
+        if (isUserInitiated) {
+            detailsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
         setTimeout(() => {
           let subItems;
           if (data.isFeedback) {
@@ -406,16 +424,13 @@
         stickyNavContent.appendChild(stickyButton);
       });
       
-      function handleModuleSelection(moduleId, autoPlay = false) {
+      function handleModuleSelection(moduleId, autoPlay = false, isUserInitiated = false) {
         localStorage.setItem('lastActiveModule', moduleId);
-        if(!autoPlay) {
-            detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        updateModuleView(moduleId, autoPlay);
+        updateModuleView(moduleId, autoPlay, isUserInitiated);
       }
 
-      selector.addEventListener("click", e => { const card = e.target.closest(".module-card"); if (card) handleModuleSelection(card.dataset.module, true); });
-      stickyNav.addEventListener("click", e => { const button = e.target.closest(".sticky-nav-button"); if (button) handleModuleSelection(button.dataset.module, true); });
+      selector.addEventListener("click", e => { const card = e.target.closest(".module-card"); if (card) handleModuleSelection(card.dataset.module, true, true); });
+      stickyNav.addEventListener("click", e => { const button = e.target.closest(".sticky-nav-button"); if (button) handleModuleSelection(button.dataset.module, true, true); });
       
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { stickyNav.classList.toggle("visible", entry.isIntersecting); });
@@ -492,7 +507,7 @@
 
       const lastModule = localStorage.getItem('lastActiveModule');
       if (lastModule && modulesData[lastModule]) {
-          handleModuleSelection(lastModule, false); // Don't autoplay on initial load
+          handleModuleSelection(lastModule, false, false); // Don't autoplay or scroll on initial load
       }
     });
 
