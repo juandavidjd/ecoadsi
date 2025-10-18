@@ -104,8 +104,10 @@
     .sticky-nav-button {
       background-color: transparent; color: #fff;
       border: 2px solid transparent; border-radius: 0.5rem;
-      padding: 0.5rem 0.75rem; transition: all 0.3s ease;
+      padding: 0.5rem; transition: all 0.3s ease;
       cursor: pointer; opacity: 0.7;
+      flex-grow: 1;
+      text-align: center;
     }
     .sticky-nav-button:hover { opacity: 1; background-color: rgba(255,255,255,0.1); }
     .sticky-nav-button.active { opacity: 1; border-color: #00E0FF; background-color: #0046FF; }
@@ -139,8 +141,8 @@
 
     @media (max-width: 768px) {
       .sticky-nav-button .sticky-nav-text { display: none; }
-      .sticky-nav-button { padding: 0.75rem; font-size: 1.5rem; }
-      #sticky-module-nav-content { justify-content: space-around; }
+      .sticky-nav-button { font-size: 1.5rem; }
+      #sticky-module-nav-content { justify-content: space-between; }
     }
   </style>
 </head>
@@ -149,7 +151,7 @@
   <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
     <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
       <a href="index.html" class="text-3xl sm:text-2xl font-bold font-poppins header-link-interactive">
-        🧠 <span class="hidden sm:inline bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">Ecosistema ADSI</span>
+        🧠<span class="hidden sm:inline bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">ADSI</span>
       </a>
       <a href="#contacto" class="bg-[#0046FF] text-white px-5 py-2 sm:px-6 rounded-full hover:bg-opacity-90 transition-all text-sm sm:text-base">
         Conecta
@@ -181,7 +183,7 @@
   <section id="module-details" class="bg-gray-tech text-white py-24 relative overflow-hidden">
     <canvas id="gray-canvas" class="animated-canvas"></canvas>
     <div class="container mx-auto px-6 relative z-10">
-      <div id="module-content-area" class="min-h-[450px] flex items-center justify-center text-center">
+      <div id="module-content-area" class="min-h-[450px] flex items-center justify-center text-center relative">
         <p class="text-2xl opacity-50 font-poppins">Selecciona un módulo para ver los detalles</p>
       </div>
     </div>
@@ -221,7 +223,7 @@
   </footer>
 
   <div id="sticky-module-nav">
-    <div id="sticky-module-nav-content" class="container mx-auto px-2 sm:px-4 flex justify-around items-center">
+    <div id="sticky-module-nav-content" class="container mx-auto px-2 sm:px-4 flex justify-between items-center gap-x-1">
     </div>
   </div>
 
@@ -250,15 +252,14 @@
       let detailCarouselState = { interval: null, pauseTimeout: null, isRunning: false };
       let isDetailsSectionVisible = false;
 
-       area.insertAdjacentHTML('beforeend', `
-        <div id="pause-indicator" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 hidden rounded-lg pointer-events-none">
-            <svg class="w-16 h-16 text-white opacity-75" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 6a1 1 0 00-1 1v6a1 1 0 102 0V7a1 1 0 00-1-1zm2 0a1 1 0 00-1 1v6a1 1 0 102 0V7a1 1 0 00-1-1z" clip-rule="evenodd" />
+      area.insertAdjacentHTML('beforeend', `
+        <div id="pause-indicator" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 z-20 hidden rounded-lg pointer-events-none transition-opacity duration-300">
+            <svg class="w-16 h-16 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1zm4 0a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
             </svg>
         </div>
-    `);
-    const pauseIndicator = document.getElementById('pause-indicator');
-
+      `);
+      const pauseIndicator = document.getElementById('pause-indicator');
 
       const detailsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -297,17 +298,19 @@
         });
       }
       
-      function stopDetailCarousel() {
+      function stopDetailCarousel(manual = false) {
         clearTimeout(detailCarouselState.interval);
         clearTimeout(detailCarouselState.pauseTimeout);
         detailCarouselState.interval = null;
         detailCarouselState.pauseTimeout = null;
         detailCarouselState.isRunning = false;
-        pauseIndicator.classList.add('hidden');
+        if(manual) {
+            pauseIndicator.classList.add('hidden');
+        }
       }
 
       function startDetailCarousel(moduleId, subItems, isFeedback = false, startIndex = 0) {
-        stopDetailCarousel();
+        stopDetailCarousel(true);
         detailCarouselState.isRunning = true;
         let currentIndex = startIndex;
         let rounds = 0;
@@ -331,7 +334,18 @@
             }
 
             if (rounds >= 1) {
-                stopDetailCarousel();
+                detailCarouselState.isRunning = false;
+                pauseIndicator.classList.remove('hidden');
+
+                detailCarouselState.pauseTimeout = setTimeout(() => {
+                    pauseIndicator.classList.add('hidden');
+                    if(isDetailsSectionVisible){
+                        const currentModuleIndex = moduleKeys.indexOf(moduleId);
+                        const nextModuleIndex = (currentModuleIndex + 1) % moduleKeys.length;
+                        const nextModuleId = moduleKeys[nextModuleIndex];
+                        handleModuleSelection(nextModuleId, true);
+                    }
+                }, 2000);
                 return;
             }
             
@@ -341,10 +355,10 @@
         advance();
       }
 
-      function updateModuleView(moduleId) {
+      function updateModuleView(moduleId, autoPlay = false) {
         const data = modulesData[moduleId];
         area.style.opacity = 0;
-        stopDetailCarousel();
+        stopDetailCarousel(true);
         
         setTimeout(() => {
           let subItems;
@@ -355,11 +369,11 @@
             kpiSelector.addEventListener('click', e => { 
                 const card = e.target.closest('.feedback-kpi-card'); 
                 if(card) {
-                    const clickedIndex = subItems.indexOf(card);
-                    startDetailCarousel(moduleId, subItems, true, clickedIndex);
+                    stopDetailCarousel(true);
+                    updateFeedbackDetail(card.dataset.key, data.details[card.dataset.key]);
                 } 
             });
-            startDetailCarousel(moduleId, subItems, true);
+            if(autoPlay) startDetailCarousel(moduleId, subItems, true);
           } else {
             area.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start"><div id="module-detail-content" class="md:col-span-2 text-left"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='text-lg opacity-90 text-justify'>${data.text}</p></div><div id="module-submenu" class="md:col-span-1 space-y-3">${Object.keys(data.details).map(key => `<div class="detail-submenu-item rounded-lg p-4 text-cyan-accent font-semibold text-lg" data-key="${key}">${key}</div>`).join('')}</div></div>`;
             const submenu = document.getElementById('module-submenu');
@@ -367,11 +381,11 @@
             submenu.addEventListener('click', e => { 
                 const subItem = e.target.closest('.detail-submenu-item'); 
                 if (subItem) { 
-                    const clickedIndex = subItems.indexOf(subItem);
-                    startDetailCarousel(moduleId, subItems, false, clickedIndex);
+                    stopDetailCarousel(true);
+                    updateDetailContent(moduleId, subItem.dataset.key);
                 } 
             });
-            startDetailCarousel(moduleId, subItems, false);
+            if(autoPlay) startDetailCarousel(moduleId, subItems, false);
           }
           area.style.opacity = 1;
         }, 300);
@@ -386,20 +400,22 @@
         card.innerHTML = `<span class='text-4xl'>${moduleIcons[id]}</span><h3 class='font-poppins font-semibold'>${moduleNames[id]}</h3>`;
         selector.appendChild(card);
         const stickyButton = document.createElement("button");
-        stickyButton.className = "sticky-nav-button flex items-center gap-x-2";
+        stickyButton.className = "sticky-nav-button flex items-center justify-center";
         stickyButton.dataset.module = id;
-        stickyButton.innerHTML = `<span class="sticky-nav-icon text-2xl">${moduleIcons[id]}</span><span class="sticky-nav-text font-semibold">${moduleNames[id]}</span>`;
+        stickyButton.innerHTML = `<span class="sticky-nav-icon">${moduleIcons[id]}</span><span class="sticky-nav-text font-semibold">${moduleNames[id]}</span>`;
         stickyNavContent.appendChild(stickyButton);
       });
       
-      function handleModuleSelection(moduleId) {
+      function handleModuleSelection(moduleId, autoPlay = false) {
         localStorage.setItem('lastActiveModule', moduleId);
-        detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        updateModuleView(moduleId);
+        if(!autoPlay) {
+            detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        updateModuleView(moduleId, autoPlay);
       }
 
-      selector.addEventListener("click", e => { const card = e.target.closest(".module-card"); if (card) handleModuleSelection(card.dataset.module); });
-      stickyNav.addEventListener("click", e => { const button = e.target.closest(".sticky-nav-button"); if (button) handleModuleSelection(button.dataset.module); });
+      selector.addEventListener("click", e => { const card = e.target.closest(".module-card"); if (card) handleModuleSelection(card.dataset.module, true); });
+      stickyNav.addEventListener("click", e => { const button = e.target.closest(".sticky-nav-button"); if (button) handleModuleSelection(button.dataset.module, true); });
       
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { stickyNav.classList.toggle("visible", entry.isIntersecting); });
@@ -476,7 +492,7 @@
 
       const lastModule = localStorage.getItem('lastActiveModule');
       if (lastModule && modulesData[lastModule]) {
-          handleModuleSelection(lastModule);
+          handleModuleSelection(lastModule, false); // Don't autoplay on initial load
       }
     });
 
