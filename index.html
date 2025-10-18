@@ -1,362 +1,386 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ecosistema ADSI</title>
-
-  <!-- Paleta y Fuentes -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
-
-  <!-- =============================================================== -->
-  <!-- ============ SINCRONIZACIÓN PWA Y METADATOS =================== -->
-  <!-- =============================================================== -->
-  <link rel="manifest" href="site.webmanifest">
-  <meta name="msapplication-config" content="browserconfig.xml">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <meta name="theme-color" content="#0046FF">
-  
-  <meta name="description" content="Ecosistema ADSI — Tecnología con propósito. Inteligencia que piensa, siente y actúa contigo. Transformamos confianza en resultados.">
-  <meta property="og:title" content="Ecosistema ADSI">
-  <meta property="og:description" content="Ecosistema ADSI — Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
-  <meta property="og:image" content="favicon-512.png">
-  <meta property="og:url" content="https://juandavidjd.github.io/ecoadsi/">
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- =============================================================== -->
-  
-  <style>
-    html { scroll-behavior: smooth; }
-    body {
-      background-color: #fff;
-      font-family: 'Montserrat', sans-serif;
-      color: #2D2D2D;
-      overflow-x: hidden;
-    }
-
-    h1, h2, h3 { font-family: 'Poppins', sans-serif; font-weight: 800; }
-    h2 { font-weight: 600; }
-
-    .hero-gradient { background: linear-gradient(45deg, #001f6a, #0046FF); }
-    .bg-gray-tech { background-color: #2D2D2D; }
-    .text-cyan-accent { color: #00E0FF; }
-
-    #network-canvas, #gray-canvas, #vision-canvas {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: block; z-index: 1;
-    }
-
-    .content-z { position: relative; z-index: 2; }
-
-    .module-card {
-      background: white; 
-      border: 2px solid transparent;
-      border-radius: 0.75rem; 
-      padding: 1.25rem 1.5rem;
-      transition: all 0.3s ease-in-out; 
-      cursor: pointer;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
-    }
-    .module-card:hover, .module-card.active {
-      background-color: #0046FF; 
-      color: #fff;
-      transform: translateY(-6px);
-      box-shadow: 0 10px 25px rgba(0,70,255,0.3);
-      border-color: #00E0FF;
-    }
-    .module-card h3 {
-      white-space: nowrap;
-      font-size: 1.125rem;
-    }
-
-    .text-shadow-cyan { text-shadow: 0 0 8px rgba(0,224,255,0.7); }	
-	
-    #sticky-module-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background-color: rgba(45, 45, 45, 0.9);
-      backdrop-filter: blur(10px); padding: 0.75rem 0;
-      transform: translateY(100%); transition: transform 0.4s ease-in-out;
-      z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
-    }
-    #sticky-module-nav.visible { transform: translateY(0); }
-    .sticky-nav-button {
-      background-color: transparent; color: #fff;
-      border: 2px solid transparent; border-radius: 0.5rem;
-      padding: 0.5rem 0.75rem; transition: all 0.3s ease;
-      cursor: pointer; opacity: 0.7;
-    }
-    .sticky-nav-button:hover { opacity: 1; background-color: rgba(255,255,255,0.1); }
-    .sticky-nav-button.active { opacity: 1; border-color: #00E0FF; background-color: #0046FF; }
-
-    #module-detail-content, #feedback-detail-content { transition: opacity 0.3s ease-in-out; }
-    .detail-submenu-item, .feedback-kpi-card {
-      background-color: rgba(255,255,255,0.05);
-      border: 1px solid rgba(0,224,255,0.3);
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-    .detail-submenu-item:hover, .feedback-kpi-card:hover { background-color: rgba(0,224,255,0.1); border-color: #00E0FF; }
-    .detail-submenu-item.active-detail, .feedback-kpi-card.active-detail { background-color: #0046FF; border-color: #00E0FF; }
-
-    /* --- MEJORA: Animación para el enlace del header --- */
-    .header-link-interactive {
-      transition: transform 0.3s ease, text-shadow 0.3s ease;
-      display: inline-block; /* Necesario para que transform funcione */
-    }
-    .header-link-interactive:hover {
-      transform: scale(1.03);
-      text-shadow: 0 0 8px rgba(0, 224, 255, 0.7);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecosistema ADSI - Manifiesto Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
     
-    @media (max-width: 380px) {
-      .module-card h3 {
-        white-space: normal;
-        word-break: break-word;
-        font-size: 0.95rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .sticky-nav-button span { display: none; }
-      .sticky-nav-button { padding: 0.75rem; }
-      #sticky-module-nav-content { justify-content: space-around; }
-    }
-  </style>
-</head>
-<body class="antialiased">
-
-  <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="ecosistema_adsi_manifiesto.html" class="text-2xl font-bold font-poppins header-link-interactive">
-        🧠 <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">Ecosistema ADSI</span>
-      </a>
-      <a href="#contacto" class="bg-[#0046FF] text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all">
-        Conecta
-      </a>
-    </nav>
-  </header>
-
-  <section id="hero" class="hero-gradient text-white py-24 md:py-32 relative overflow-hidden">
-    <canvas id="network-canvas"></canvas>
-    <div class="container mx-auto px-6 text-center content-z">
-      <h1 class="text-5xl md:text-6xl font-extrabold">Ecosistema ADSI</h1>
-      <h2 class="text-xl md:text-2xl mt-4 opacity-90">Análisis, Diseño, Desarrollo e Implementación de Sistemas de Información.</h2>
-      <!-- --- MEJORA: Eslogan actualizado --- -->
-      <p class="mt-8 text-2xl font-light text-cyan-accent text-shadow-cyan">“Juntos, transformamos confianza en resultados.<br>Confianza entre datos, decisiones y personas.”</p>
-    </div>
-  </section>
-
-  <section id="ecosystem-intro" class="py-20 bg-gray-50 text-center">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-800">🔹 Un sistema vivo que evoluciona contigo.</h2>
-      <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-600">
-        El Ecosistema ADSI conecta estrategia, tecnología y acción en una red inteligente de resultados.
-        Cada módulo se comunica en tiempo real, garantizando estabilidad, eficiencia y control total.
-      </p>
-      <div id="module-selector" class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </div>
-  </section>
-
-  <section id="module-details" class="bg-gray-tech text-white py-24 relative overflow-hidden">
-    <canvas id="gray-canvas"></canvas>
-    <div class="container mx-auto px-6 relative z-10">
-      <div id="module-content-area" class="min-h-[450px] flex items-center justify-center text-center">
-        <p class="text-2xl opacity-50 font-poppins">Selecciona un módulo para ver los detalles</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="vision" class="py-24 bg-gray-tech text-white relative overflow-hidden">
-    <canvas id="vision-canvas"></canvas>
-    <div class="container mx-auto px-6 text-center content-z">
-      <h2 class="text-3xl md:text-4xl font-bold">✨ Más que tecnología, somos evolución estratégica.</h2>
-      <p class="mt-6 max-w-3xl mx-auto text-lg opacity-90">
-        El Ecosistema ADSI fusiona conocimiento, análisis y acción para crear crecimiento sostenible.
-        Transformamos organizaciones en sistemas vivos que aprenden, mejoran y se expanden continuamente.
-      </p>
-    </div>
-  </section>
-
-  <footer id="contacto" class="bg-white py-20 text-center">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-800">📩 Conecta con el equipo ADSI</h2>
-      <p class="mt-4 max-w-2xl mx-auto text-gray-600">
-        Acompañamos tu evolución digital con soluciones inteligentes, medibles y orientadas a resultados.
-      </p>
-      <div class="mt-10 space-y-4">
-        <a href="https://wa.me/" target="_blank" class="block text-[#25D366] font-semibold">WhatsApp +57(311)436-8937</a>
-        <a href="mailto:adsicctcol@gmail.com" class="block text-gray-800">adsicctcol@gmail.com</a>
-        <a href="http://www.linkedin.com/in/adsicctcol" target="_blank" class="block text-gray-800">www.linkedin.com/in/adsicctcol</a>
-      </div>
-      <div class="pt-6">
-        <p class="font-semibold text-gray-800">Juan David Jiménez Sierra</p>
-        <p class="text-gray-500">Director de Estrategia Digital</p>
-      </div>
-      <!-- --- MEJORA: Eslogan actualizado --- -->
-      <div class="mt-12 text-cyan-accent text-shadow-cyan font-light text-lg">
-        “Juntos, transformamos confianza en resultados.<br>Confianza entre datos, decisiones y personas.”
-      </div>
-    </div>
-  </footer>
-
-  <div id="sticky-module-nav">
-    <div id="sticky-module-nav-content" class="container mx-auto px-6 flex justify-center items-center gap-x-2 md:gap-x-4">
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const modulesData = {
-        cerebro: { title: "🎯 Inteligencia estratégica que decide con datos.", text: "El CEREBRO ADSI convierte información en decisiones precisas, analizando comportamientos, midiendo rendimiento y anticipando oportunidades para ajustar estrategias de forma automática.", details: { "📊 Análisis predictivo": { icon: "📈", description: "Utilizamos modelos de datos para identificar patrones y tendencias futuras, permitiendo tomar decisiones proactivas que optimizan el rendimiento y minimizan riesgos antes de que ocurran." }, "🔄 Sincronización estratégica": { icon: "🤝", description: "Aseguramos que todas las acciones operativas estén perfectamente alineadas con los objetivos de negocio, creando una coherencia total entre la planificación y la ejecución." }, "🧠 Medición continua": { icon: "⏱️", description: "Monitorizamos en tiempo real los indicadores clave de rendimiento (KPIs), ofreciendo dashboards claros que permiten evaluar la salud del sistema y el progreso hacia las metas." }}},
-        pasarela: { title: "💰 Pagos seguros, flujos estables, conexión total.", text: "La PASARELA ADSI garantiza transacciones seguras, fluidas y trazables, unificando pagos, validaciones y conciliaciones bajo una conexión cifrada que asegura estabilidad operativa 24/7.", details: { "🔗 Conectividad estable": { icon: "🌐", description: "Nuestra infraestructura garantiza una conexión robusta y sin interrupciones con las principales entidades financieras, asegurando que cada transacción se procese de manera confiable." }, "💵 Transacciones en tiempo real": { icon: "💸", description: "Procesamos pagos de forma instantánea, mejorando el flujo de caja y la experiencia del cliente al confirmar las operaciones al momento, sin demoras." }, "🔒 Seguridad avanzada": { icon: "🛡️", description: "Implementamos múltiples capas de seguridad, incluyendo cifrado de extremo a extremo y protocolos anti-fraude, para proteger cada transacción y dato sensible." }}},
-        catalogo: { title: "📦 Todo tu portafolio, sincronizado y visible.", text: "El CATÁLOGO ADSI centraliza productos, servicios y datos en una interfaz autogestionable. Cada actualización se refleja en tiempo real en todos los canales.", details: { "🖥️ Visualización en tiempo real": { icon: "💻", description: "Ofrecemos una vista unificada y actualizada de todo tu portafolio, accesible desde cualquier dispositivo, garantizando que equipos de ventas y clientes vean siempre la misma información." }, "📊 Actualización automática": { icon: "🔄", description: "Cualquier cambio en precios, stock o descripciones se propaga instantáneamente a todos los puntos de venta (web, apps, etc.), eliminando inconsistencias." }, "💡 Gestión inteligente": { icon: "🔧", description: "Permite organizar productos por categorías, etiquetas y atributos personalizados, facilitando la búsqueda, el filtrado y la gestión masiva de información." }}},
-        operacion: { title: "⚙️ Automatización que convierte estrategia en acción.", text: "La OPERACIÓN ADSI coordina tareas, procesos y equipos en tiempo real, transformando la planificación en resultados tangibles y garantizando eficiencia medible.", details: { "🔁 Control continuo": { icon: "🕹️", description: "Supervisamos cada etapa de los flujos de trabajo, asignando recursos de forma inteligente y notificando a los responsables para asegurar que nada se quede atrás." }, "🧩 Integración total": { icon: "🔗", description: "Conectamos herramientas y departamentos en una única plataforma, rompiendo silos de información y permitiendo una colaboración fluida y sin fricciones." }, "🎯 Productividad medible": { icon: "🚀", description: "Generamos reportes detallados sobre tiempos de ciclo, uso de recursos y cuellos de botella, permitiendo optimizar continuamente la eficiencia operativa." }}},
-        envios: { title: "🚀 Logística inteligente con trazabilidad total.", text: "El módulo ENVÍOS ADSI asegura precisión y cumplimiento en cada entrega, optimizando rutas y notificando en tiempo real para una experiencia confiable.", details: { "📍 Seguimiento dinámico": { icon: "🗺️", description: "Tanto el equipo interno como el cliente final pueden ver la ubicación del envío en un mapa en tiempo real, aumentando la transparencia y reduciendo la incertidumbre." }, "⏱️ Entregas garantizadas": { icon: "📦", description: "Nuestro sistema calcula las rutas más eficientes y estima tiempos de entrega precisos, coordinando con los transportistas para asegurar el cumplimiento de los plazos." }, "📦 Optimización logística": { icon: "🚚", description: "Analizamos datos históricos de entregas para optimizar rutas, consolidar cargas y reducir costos operativos, mejorando la rentabilidad de la cadena de suministro." }}},
-        retroalimentacion: { title: "🔁 Cada interacción mejora el sistema.", text: "El Ciclo de Retroalimentación ADSI mide métricas clave, identifica oportunidades y ajusta estrategias en tiempo real para impulsar un crecimiento sostenido.", isFeedback: true, details: { "📊 Tráfico digital": { description: "Mide el volumen y la calidad de los usuarios que llegan a tus plataformas digitales, permitiendo evaluar el alcance de las estrategias de marketing y la visibilidad de la marca." }, "💬 Engagement": { description: "Analiza cómo interactúan los usuarios con tu contenido. Un alto engagement indica un contenido relevante y una comunidad activa, fortaleciendo la lealtad del cliente." }, "🎯 Conversión": { description: "Es el indicador clave del éxito. Mide el porcentaje de usuarios que realizan una acción deseada, como una compra o un registro, validando la efectividad del embudo de ventas." }, "🤝 Satisfacción": { description: "Mide el grado de contentamiento del cliente con el producto o servicio a través de encuestas y calificaciones, siendo vital para la retención y la mejora continua." }, "⚙️ Eficiencia": { description: "Evalúa el rendimiento de los procesos internos, midiendo la relación entre los recursos invertidos y los resultados obtenidos para maximizar la rentabilidad operativa." }}}
-      };
-      
-      const moduleIcons = { cerebro: "🧠", pasarela: "💳", catalogo: "🧱", operacion: "⚡", envios: "🚚", retroalimentacion: "🔄" };
-      const moduleNames = { cerebro: "Cerebro", pasarela: "Pasarela", catalogo: "Catálogo", operacion: "Operación", envios: "Envíos", retroalimentacion: "Retroalimentación" };
-      
-      const selector = document.getElementById("module-selector");
-      const area = document.getElementById("module-content-area");
-      const detailsSection = document.getElementById("module-details");
-      const stickyNav = document.getElementById("sticky-module-nav");
-      const stickyNavContent = document.getElementById("sticky-module-nav-content");
-
-      function updateDetailContent(moduleId, detailKey) {
-        const detailData = modulesData[moduleId].details[detailKey];
-        const contentDiv = document.getElementById('module-detail-content');
-        if (!contentDiv) return;
-        contentDiv.style.opacity = 0;
-        setTimeout(() => {
-          contentDiv.innerHTML = `<div class="text-center p-4 md:text-left"><div class="text-7xl mb-4 text-center md:text-left">${detailData.icon}</div><h3 class="text-2xl font-bold font-poppins text-cyan-accent mb-2">${detailKey.substring(2)}</h3><p class="text-lg opacity-90">${detailData.description}</p></div>`;
-          contentDiv.style.opacity = 1;
-        }, 300);
-        document.querySelectorAll('.detail-submenu-item').forEach(item => {
-          item.classList.toggle('active-detail', item.dataset.key === detailKey);
-        });
-      }
-      
-      function updateFeedbackDetail(kpiKey, data){
-        const contentDiv = document.getElementById('feedback-detail-content');
-        if(!contentDiv) return;
-        contentDiv.style.opacity = 0;
-        setTimeout(() => {
-            contentDiv.innerHTML = `<h3 class="text-2xl font-bold font-poppins text-cyan-accent mb-2">${kpiKey}</h3><p class="text-lg opacity-90">${data.description}</p>`;
-            contentDiv.style.opacity = 1;
-        }, 300);
-        document.querySelectorAll('.feedback-kpi-card').forEach(card => {
-            card.classList.toggle('active-detail', card.dataset.key === kpiKey);
-        });
-      }
-
-      function updateModuleView(moduleId) {
-        const data = modulesData[moduleId];
-        area.style.opacity = 0;
-        setTimeout(() => {
-          if (data.isFeedback) {
-            area.innerHTML = `<div class="text-center w-full"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='max-w-3xl mx-auto text-lg mb-8 opacity-90'>${data.text}</p><div id="feedback-detail-content" class="min-h-[120px] bg-black/20 p-6 rounded-lg mb-8 text-left"><p class="text-xl opacity-70 text-center">Selecciona un indicador para ver su importancia.</p></div><div id="feedback-kpi-selector" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">${Object.keys(data.details).map(key => `<div class="feedback-kpi-card rounded-lg p-4 font-semibold text-center" data-key="${key}">${key}</div>`).join('')}</div></div>`;
-            document.getElementById('feedback-kpi-selector').addEventListener('click', e => { const card = e.target.closest('.feedback-kpi-card'); if(card) { updateFeedbackDetail(card.dataset.key, data.details[card.dataset.key]); } });
-          } else {
-            area.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start"><div id="module-detail-content" class="md:col-span-2 text-left"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='text-lg opacity-90'>${data.text}</p></div><div id="module-submenu" class="md:col-span-1 space-y-3">${Object.keys(data.details).map(key => `<div class="detail-submenu-item rounded-lg p-4 text-cyan-accent font-semibold text-lg" data-key="${key}">${key}</div>`).join('')}</div></div>`;
-            document.getElementById('module-submenu').addEventListener('click', e => { const subItem = e.target.closest('.detail-submenu-item'); if (subItem) { updateDetailContent(moduleId, subItem.dataset.key); } });
-          }
-          area.style.opacity = 1;
-        }, 300);
-        document.querySelectorAll(".module-card").forEach(c => c.classList.toggle("active", c.dataset.module === moduleId));
-        document.querySelectorAll(".sticky-nav-button").forEach(b => b.classList.toggle("active", b.dataset.module === moduleId));
-      }
-
-      Object.keys(modulesData).forEach(id => {
-        const card = document.createElement("div");
-        card.className = "module-card";
-        card.dataset.module = id;
-        card.innerHTML = `<div class='text-4xl'>${moduleIcons[id]}</div><h3 class='font-poppins font-semibold'>${moduleNames[id]}</h3>`;
-        selector.appendChild(card);
-        const stickyButton = document.createElement("button");
-        stickyButton.className = "sticky-nav-button flex items-center gap-x-2";
-        stickyButton.dataset.module = id;
-        stickyButton.innerHTML = `<span>${moduleIcons[id]}</span><span class="font-semibold">${moduleNames[id]}</span>`;
-        stickyNavContent.appendChild(stickyButton);
-      });
-      
-      function handleModuleSelection(moduleId) {
-        localStorage.setItem('lastActiveModule', moduleId);
-        detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        updateModuleView(moduleId);
-      }
-
-      selector.addEventListener("click", e => { const card = e.target.closest(".module-card"); if (card) handleModuleSelection(card.dataset.module); });
-      stickyNav.addEventListener("click", e => { const button = e.target.closest(".sticky-nav-button"); if (button) handleModuleSelection(button.dataset.module); });
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { stickyNav.classList.toggle("visible", entry.isIntersecting); });
-      }, { threshold: 0.1 });
-      observer.observe(detailsSection);
-
-      function setupCanvasAnimation(id, {nodeColor='rgba(0,224,255,0.5)', lineColor='rgba(0,224,255,0.2)', numNodes=70}={}) {
-        const c = document.getElementById(id);
-        if (!c) return;
-        const ctx = c.getContext('2d');
-        const section = c.parentElement;
-        let nodes = [];
-        function resize() {
-          c.width = section.clientWidth;
-          c.height = section.clientHeight;
-          nodes = Array.from({length:numNodes},()=>({ x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6 }));
+    <!-- =============================================================== -->
+    <!-- ============ SINCRONIZACIÓN PWA Y METADATOS =================== -->
+    <!-- =============================================================== -->
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="theme-color" content="#0046FF">
+    
+    <meta name="description" content="Ecosistema ADSI — Tecnología con propósito. Inteligencia que piensa, siente y actúa contigo. Transformamos confianza en resultados.">
+    <meta property="og:title" content="Ecosistema ADSI">
+    <meta property="og:description" content="Ecosistema ADSI — Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
+    <meta property="og:image" content="favicon-512.png">
+    <meta property="og:url" content="https://juandavidjd.github.io/ecoadsi/">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- =============================================================== -->
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #F8F9FA; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        .hero-gradient { background: linear-gradient(135deg, #001f6a, #0046FF); }
+        .text-brand-blue { color: #0046FF; }
+        .bg-brand-blue { background-color: #0046FF; }
+        .border-brand-blue { border-color: #0046FF; }
+        .ring-brand-blue { --tw-ring-color: #0046FF; }
+        .accent-gradient { background: linear-gradient(90deg, #00E0FF, #0046FF); }
+        .philosophy-tab.active { border-color: #0046FF; background-color: #0046FF; color: white; }
+        
+        .module-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
         }
-        function draw() {
-          ctx.clearRect(0,0,c.width,c.height);
-          for (const n of nodes) {
-            n.x += n.vx; n.y += n.vy;
-            if (n.x<=0||n.x>=c.width) n.vx*=-1;
-            if (n.y<=0||n.y>=c.height) n.vy*=-1;
-            ctx.beginPath(); ctx.arc(n.x,n.y,2.3,0,Math.PI*2); ctx.fillStyle=nodeColor; ctx.fill();
-          }
-          for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
-            const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
-            const dist=Math.sqrt(dx*dx+dy*dy);
-            if (dist<180){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
-              ctx.strokeStyle=lineColor;ctx.lineWidth=1-dist/180;ctx.stroke();}
-          }
-          requestAnimationFrame(draw);
+        .module-card h4 {
+            white-space: nowrap;
+        }
+        .module-card.active { 
+            border-color: #00E0FF; 
+            background-color: #0d4ed81a; 
+            --tw-ring-color: #00E0FF;
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+        }
+
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin: auto; height: 400px; }
+        @media (max-width: 768px) { .chart-container { height: 450px; } }
+        html { scroll-behavior: smooth; }
+        
+        section { 
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .animated-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+        .content-z {
+            position: relative;
+            z-index: 2;
         }
         
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(resize, 200);
+        .header-link-interactive {
+          transition: transform 0.3s ease, text-shadow 0.3s ease;
+          display: inline-block;
+        }
+        .header-link-interactive:hover {
+          transform: scale(1.03);
+          text-shadow: 0 0 8px rgba(0, 70, 255, 0.7);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="ecosistema_adsi_manifiesto.html" class="text-2xl font-extrabold text-brand-blue header-link-interactive">🧠 ADSI</a>
+            <nav class="hidden md:flex space-x-6 text-gray-600 font-medium">
+                <a href="#filosofia" class="hover:text-brand-blue transition">Filosofía</a>
+                <a href="#estructura" class="hover:text-brand-blue transition">Estructura</a>
+                <a href="#adn" class="hover:text-brand-blue transition">ADN</a>
+                <a href="#impacto" class="hover:text-brand-blue transition">Impacto</a>
+                <a href="#vision" class="hover:text-brand-blue transition">Visión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-gradient text-white min-h-[60vh] flex items-center py-20">
+            <canvas class="animated-canvas" id="hero-canvas"></canvas>
+            <div class="container mx-auto px-6 text-center content-z">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+                    En una era de datos, elegimos propósito.<br>
+                    En un mercado de velocidad, elegimos sentido.
+                </h1>
+                <p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+                    Porque el futuro no será de los más grandes… será de los más conscientes.
+                </p>
+            </div>
+        </section>
+
+        <section id="filosofia" class="py-20 bg-white">
+            <canvas class="animated-canvas" id="filosofia-canvas"></canvas>
+            <div class="container mx-auto px-6 text-center content-z">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">El Porqué de ADSI</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Nuestra filosofía se basa en una convicción clara: la tecnología solo tiene valor cuando entiende, amplifica y evoluciona con el ser humano.</p>
+                
+                <div class="mt-12 max-w-4xl mx-auto">
+                    <div id="philosophy-tabs-container" class="flex flex-col sm:flex-row justify-center border-b-2 border-gray-200">
+                        <button data-tab="origen" class="philosophy-tab py-3 px-6 font-semibold border-b-4 transition duration-300">1. Origen</button>
+                        <button data-tab="proposito" class="philosophy-tab py-3 px-6 font-semibold border-b-4 transition duration-300">2. Propósito</button>
+                        <button data-tab="filosofia-core" class="philosophy-tab py-3 px-6 font-semibold border-b-4 transition duration-300">3. Filosofía</button>
+                    </div>
+                    <div id="philosophy-content" class="mt-8 text-left text-lg text-gray-700 leading-relaxed min-h-[200px]">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="estructura" class="py-20">
+            <canvas class="animated-canvas" id="estructura-canvas"></canvas>
+            <div class="container mx-auto px-6 content-z">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">El Sistema Nervioso Digital</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">ADSI se compone de seis módulos interconectados, una red inteligente que funciona como el cerebro de una organización moderna, generando una inteligencia colectiva.</p>
+                </div>
+
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                    <div id="modules-grid" class="md:col-span-1 grid grid-cols-1 gap-4">
+                    </div>
+                    <div id="module-display" class="md:col-span-2 bg-white p-8 rounded-2xl shadow-lg min-h-[300px] flex flex-col justify-center transition-all duration-500">
+                        <p class="text-xl text-center text-gray-400">Selecciona un módulo para ver su función.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="adn" class="py-20 bg-white">
+            <canvas class="animated-canvas" id="adn-canvas"></canvas>
+            <div class="container mx-auto px-6 text-center content-z">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">ADN de Marca</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Los cinco pilares que definen cada algoritmo, proceso e interacción dentro del ecosistema.</p>
+                <div id="dna-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="impacto" class="py-20">
+            <canvas class="animated-canvas" id="impacto-canvas"></canvas>
+            <div class="container mx-auto px-6 content-z">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Impacto: Resultados Medibles, Evolución Visible</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Más allá de los números, el impacto se mide en la confianza y claridad que brindamos a nuestros aliados.</p>
+                </div>
+                <div class="mt-12">
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-12 text-center">
+                    <blockquote class="text-2xl italic font-medium text-gray-800 max-w-3xl mx-auto">
+                        “ADSI no solo nos organiza. Nos entiende.”
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <section id="vision" class="py-20 bg-white">
+            <canvas class="animated-canvas" id="vision-canvas"></canvas>
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center content-z">
+                <div class="text-left">
+                    <h4 class="text-brand-blue font-semibold">CONEXIÓN HUMANA</h4>
+                    <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Tecnología con Propósito</h2>
+                    <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                        Las marcas que trascienden no son las más grandes, sino las más humanas. ADSI parte de ese principio: no busca imponer procesos, sino co-crear experiencias. Cada implementación es un diálogo, cada resultado, una historia compartida.
+                    </p>
+                </div>
+                 <div class="text-left">
+                    <h4 class="text-brand-blue font-semibold">VISIÓN</h4>
+                    <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Evolución Consciente</h2>
+                    <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                        No buscamos ser el sistema más grande, sino el más sabio. El futuro de ADSI no depende del software, sino de la conciencia digital que despierta en las organizaciones que lo adoptan. Es un ecosistema en expansión constante.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-2xl font-semibold">Ecosistema ADSI</p>
+            <p class="mt-2 text-gray-400">Juntos, transformamos confianza en resultados.<br>Confianza entre datos, decisiones y personas.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             const DATA = {
+                philosophy: {
+                    origen: "El Ecosistema ADSI nace de una convicción clara: la tecnología sólo tiene valor cuando entiende al ser humano. Durante años, las organizaciones buscaron herramientas más rápidas, pero olvidaron lo esencial: no se trata de correr más, sino de avanzar mejor. Así surge ADSI, un sistema vivo, diseñado para aprender, adaptarse y evolucionar con cada decisión.",
+                    proposito: "En un entorno dominado por la velocidad, ADSI eligió el camino del sentido. Cada módulo, cada interacción y cada algoritmo dentro del ecosistema responde a una misma intención: generar confianza a través del conocimiento. Aquí la precisión técnica se une con la empatía humana, creando un puente entre el análisis y la acción.",
+                    'filosofia-core': "ADSI entiende que el verdadero progreso no se logra acumulando tareas, sino construyendo sistemas que piensan, aprenden y deciden contigo. Cada pieza del ecosistema está diseñada para aprender del entorno y ofrecer claridad en medio de la complejidad. Porque la eficiencia sin propósito es solo velocidad vacía."
+                },
+                modules: {
+                    'cerebro': { icon: '🧠', name: 'Cerebro', func: 'Analiza comportamientos, mide desempeño y anticipa oportunidades.' },
+                    'pasarela': { icon: '💳', name: 'Pasarela', func: 'Garantiza flujos seguros, trazables y estables.' },
+                    'catalogo': { icon: '🧱', name: 'Catálogo', func: 'Centraliza portafolios y contenidos en tiempo real.' },
+                    'operacion': { icon: '⚙️', name: 'Operación', func: 'Convierte estrategias en acciones coordinadas y medibles.' },
+                    'envios': { icon: '🚚', name: 'Envíos', func: 'Optimiza la logística con precisión inteligente.' },
+                    'retroalimentacion': { icon: '🔄', name: 'Retroalimentación', func: 'Evalúa, aprende y mejora el sistema en tiempo real.' }
+                },
+                dna: [
+                    { name: "Inteligencia Adaptativa", desc: "Cada decisión surge de datos vivos y contextuales." },
+                    { name: "Diseño Humano", desc: "La tecnología se ajusta al usuario, no al revés." },
+                    { name: "Autonomía Estratégica", desc: "Los procesos se autoajustan con base en el propósito." },
+                    { name: "Evolución Constante", desc: "El sistema aprende de cada interacción." },
+                    { name: "Propósito Conectado", desc: "Toda acción responde a una visión común: confianza." }
+                ],
+                impact: {
+                    labels: ['Eficiencia Operativa', 'Retención de Clientes', 'Reducción de Costos', 'Trazabilidad Estratégica'],
+                    values: [40, 30, 35, 100]
+                }
+            };
+
+            const philosophyTabsContainer = document.getElementById('philosophy-tabs-container');
+            const philosophyContent = document.getElementById('philosophy-content');
+            
+            philosophyTabsContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const tabName = e.target.dataset.tab;
+                    document.querySelectorAll('.philosophy-tab').forEach(tab => tab.classList.remove('active'));
+                    e.target.classList.add('active');
+                    philosophyContent.style.opacity = 0;
+                    setTimeout(() => {
+                        philosophyContent.textContent = DATA.philosophy[tabName];
+                        philosophyContent.style.opacity = 1;
+                    }, 200);
+                }
+            });
+
+            philosophyTabsContainer.querySelector('[data-tab="origen"]').click();
+            
+            const modulesGrid = document.getElementById('modules-grid');
+            const moduleDisplay = document.getElementById('module-display');
+
+            Object.keys(DATA.modules).forEach(key => {
+                const module = DATA.modules[key];
+                const card = document.createElement('div');
+                card.className = 'module-card border-2 p-4 rounded-xl cursor-pointer transition duration-300 hover:shadow-md ring-2 ring-transparent';
+                card.dataset.moduleKey = key;
+                card.innerHTML = `<div class="text-4xl">${module.icon}</div><h4 class="font-semibold text-lg">${module.name}</h4>`;
+                modulesGrid.appendChild(card);
+            });
+
+            modulesGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.module-card');
+                if (card) {
+                    const moduleKey = card.dataset.moduleKey;
+                    const module = DATA.modules[moduleKey];
+
+                    document.querySelectorAll('.module-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+
+                    moduleDisplay.style.opacity = 0;
+                    setTimeout(() => {
+                        moduleDisplay.innerHTML = `
+                            <div class="text-center md:text-left">
+                                <div class="text-6xl">${module.icon}</div>
+                                <h3 class="mt-4 text-3xl font-bold text-gray-900">${module.name}</h3>
+                                <p class="mt-2 text-xl text-gray-600">${module.func}</p>
+                            </div>
+                        `;
+                        moduleDisplay.style.opacity = 1;
+                    }, 200);
+                }
+            });
+
+            const dnaGrid = document.getElementById('dna-grid');
+            DATA.dna.forEach(pillar => {
+                const item = document.createElement('div');
+                item.className = 'bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300 text-left';
+                item.innerHTML = `
+                    <h4 class="font-bold text-xl text-brand-blue">${pillar.name}</h4>
+                    <p class="mt-2 text-gray-600">${pillar.desc}</p>
+                `;
+                dnaGrid.appendChild(item);
+            });
+
+            const impactChartCtx = document.getElementById('impactChart').getContext('2d');
+            let impactChart;
+
+            const createChart = () => {
+                if (impactChart) impactChart.destroy();
+                impactChart = new Chart(impactChartCtx, {
+                    type: 'bar', data: { labels: DATA.impact.labels, datasets: [{ label: '% de Mejora', data: DATA.impact.values, backgroundColor: ['rgba(0, 70, 255, 0.7)','rgba(0, 120, 255, 0.7)','rgba(0, 170, 255, 0.7)','rgba(0, 224, 255, 0.7)'], borderColor: ['rgba(0, 70, 255, 1)','rgba(0, 120, 255, 1)','rgba(0, 170, 255, 1)','rgba(0, 224, 255, 1)'], borderWidth: 1 }] },
+                    options: { indexAxis: 'y', maintainAspectRatio: false, responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` +${c.raw}%` } } }, scales: { x: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.05)' }, ticks: { callback: (v) => v + '%' } }, y: { grid: { display: false } } }, animation: { duration: 1500, easing: 'easeInOutQuart' } }
+                });
+            }
+            
+            const chartObserver = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting){ createChart(); chartObserver.unobserve(document.getElementById('impacto')); }
+            }, { threshold: 0.5 });
+            chartObserver.observe(document.getElementById('impacto'));
+
+            function setupCanvasAnimation(canvasId, options) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const parent = canvas.parentElement;
+                let nodes = [];
+                const config = Object.assign({
+                    nodeColor: 'rgba(0, 70, 255, 0.2)',
+                    lineColor: 'rgba(0, 70, 255, 0.1)',
+                    numNodes: 50
+                }, options);
+
+                function resize() {
+                    canvas.width = parent.clientWidth;
+                    canvas.height = parent.clientHeight;
+                    nodes = Array.from({ length: config.numNodes }, () => ({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5
+                    }));
+                }
+
+                function draw() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    nodes.forEach(n => {
+                        n.x += n.vx; n.y += n.vy;
+                        if (n.x <= 0 || n.x >= canvas.width) n.vx *= -1;
+                        if (n.y <= 0 || n.y >= canvas.height) n.vy *= -1;
+                        ctx.beginPath();
+                        ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
+                        ctx.fillStyle = config.nodeColor;
+                        ctx.fill();
+                    });
+                    for (let i = 0; i < nodes.length; i++) {
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 150) {
+                                ctx.beginPath();
+                                ctx.moveTo(nodes[i].x, nodes[i].y);
+                                ctx.lineTo(nodes[j].x, nodes[j].y);
+                                ctx.strokeStyle = config.lineColor;
+                                ctx.lineWidth = 1 - dist / 150;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(draw);
+                }
+                
+                window.addEventListener('resize', resize, false);
+                resize();
+                draw();
+            }
+
+            setupCanvasAnimation('hero-canvas', { nodeColor: 'rgba(255, 255, 255, 0.5)', lineColor: 'rgba(255, 255, 255, 0.2)', numNodes: 70 });
+            setupCanvasAnimation('filosofia-canvas');
+            setupCanvasAnimation('estructura-canvas');
+            setupCanvasAnimation('adn-canvas');
+            setupCanvasAnimation('impacto-canvas');
+            setupCanvasAnimation('vision-canvas');
         });
-
-        resize(); 
-        draw();
-      }
-
-      setupCanvasAnimation('network-canvas',{numNodes:80}); 
-      setupCanvasAnimation('vision-canvas',{nodeColor:'rgba(255,255,255,0.4)',lineColor:'rgba(255,255,255,0.15)',numNodes:60}); 
-      setupCanvasAnimation('gray-canvas',{nodeColor:'rgba(0,224,255,0.4)',lineColor:'rgba(0,224,255,0.15)',numNodes:65});
-
-      const lastModule = localStorage.getItem('lastActiveModule');
-      if (lastModule && modulesData[lastModule]) {
-          handleModuleSelection(lastModule);
-          setTimeout(() => detailsSection.scrollIntoView({ behavior: 'auto', block: 'start' }), 100);
-      }
-    });
-
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("service-worker.js")
-          .then(() => console.log("✅ Service Worker registrado correctamente."))
-          .catch((err) => console.warn("⚠️ Error al registrar el SW:", err));
-      });
-    }
-  </script>
+    </script>
 </body>
 </html>
-
