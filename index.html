@@ -305,6 +305,8 @@
                 }
             };
 
+            let isDnaGridVisible = false;
+
             // --- Lógica General de Carrusel ---
             function createCarousel(container, items, contentUpdater, options) {
                 const { intervalTime = 5000, scrollTarget, autoScroll = false } = options;
@@ -332,7 +334,7 @@
                         updateView(state.currentIndex);
                         
                         const activeItem = items[state.currentIndex];
-                        if (autoScroll && activeItem) {
+                        if (autoScroll && activeItem && isDnaGridVisible) {
                             activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
 
@@ -387,7 +389,7 @@
             };
             
             philosophyContent.innerHTML = `<p class="text-center text-gray-500">Toca un tema para iniciar el recorrido.</p>`;
-            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, { intervalTime: 12000, scrollTarget: philosophyContent });
+            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, { intervalTime: 15000, scrollTarget: philosophyContent });
             
             // --- Sección de Módulos ---
             const modulesGrid = document.getElementById('modules-grid');
@@ -443,6 +445,13 @@
                 dnaGrid.appendChild(item);
                 dnaCards.push(item);
             });
+            
+            const dnaObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isDnaGridVisible = entry.isIntersecting;
+                });
+            }, { threshold: 0.1 });
+            dnaObserver.observe(dnaGrid);
 
             createCarousel(dnaGrid, dnaCards, () => {}, { intervalTime: 5000, scrollTarget: dnaGrid, autoScroll: true });
 
