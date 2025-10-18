@@ -253,14 +253,14 @@
                 <div class="text-left">
                     <h4 class="text-brand-blue font-semibold">CONEXIÓN HUMANA</h4>
                     <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Tecnología con Propósito</h2>
-                    <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                    <p class="mt-4 text-lg text-gray-600 leading-relaxed text-justify">
                         Las marcas que trascienden no son las más grandes, sino las más humanas. ADSI parte de ese principio: no busca imponer procesos, sino co-crear experiencias. Cada implementación es un diálogo, cada resultado, una historia compartida.
                     </p>
                 </div>
                  <div class="text-left">
                     <h4 class="text-brand-blue font-semibold">VISIÓN</h4>
                     <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Evolución Consciente</h2>
-                    <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                    <p class="mt-4 text-lg text-gray-600 leading-relaxed text-justify">
                         No buscamos ser el sistema más grande, sino el más sabio. El futuro de ADSI no depende del software, sino de la conciencia digital que despierta en las organizaciones que lo adoptan. Es un ecosistema en expansión constante.
                     </p>
                 </div>
@@ -306,47 +306,56 @@
             };
 
             // --- Lógica General de Carrusel ---
-            function createCarousel(container, items, contentUpdater, intervalTime = 5000, scrollTarget) {
-                let interval;
-                let isRunning = false;
-                let currentIndex = 0;
-                
-                function startCarousel(startIndex) {
-                    clearInterval(interval);
-                    currentIndex = startIndex;
-                    isRunning = true;
+            function createCarousel(container, items, contentUpdater, options) {
+                const { intervalTime = 5000, scrollTarget } = options;
+                let state = {
+                    intervalId: null,
+                    isRunning: false,
+                    currentIndex: 0,
+                };
 
-                    function showNext() {
-                        if (!isRunning) return;
-                        items.forEach((item, index) => {
-                            item.classList.toggle('active', index === currentIndex);
-                            item.classList.toggle('inactive', index !== currentIndex);
-                        });
-
-                        contentUpdater(currentIndex);
-                        
-                        currentIndex = (currentIndex + 1) % items.length;
-                    }
-                    
-                    showNext();
-                    interval = setInterval(showNext, intervalTime);
+                function updateView(indexToShow) {
+                    items.forEach((item, index) => {
+                        item.classList.toggle('active', index === indexToShow);
+                        item.classList.toggle('inactive', index !== indexToShow);
+                    });
+                    contentUpdater(indexToShow);
                 }
 
-                function stopCarousel() {
-                    clearInterval(interval);
-                    isRunning = false;
-                    // No remover clases para que el item seleccionado permanezca visible
+                function play(startIndex) {
+                    clearInterval(state.intervalId);
+                    state.currentIndex = startIndex;
+                    state.isRunning = true;
+
+                    const advance = () => {
+                        if (!state.isRunning) return;
+                        updateView(state.currentIndex);
+                        state.currentIndex = (state.currentIndex + 1) % items.length;
+                    };
+
+                    advance();
+                    state.intervalId = setInterval(advance, intervalTime);
+                }
+
+                function pause(pauseIndex) {
+                    clearInterval(state.intervalId);
+                    state.isRunning = false;
+                    updateView(pauseIndex);
                 }
 
                 container.addEventListener('click', e => {
                     const item = e.target.closest('[data-index]');
-                    if (item) {
-                        if (isRunning) {
-                            stopCarousel();
-                        } else {
-                           scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                           setTimeout(() => startCarousel(parseInt(item.dataset.index)), 300);
-                        }
+                    if (!item) return;
+
+                    const clickedIndex = parseInt(item.dataset.index, 10);
+
+                    if (state.isRunning) {
+                        pause(clickedIndex);
+                    } else {
+                        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                            play(clickedIndex);
+                        }, 300);
                     }
                 });
             }
@@ -364,14 +373,14 @@
                         philosophyContent.innerHTML = `<p class="text-center text-gray-500">Toca un tema para iniciar el recorrido.</p>`;
                     } else {
                         const key = philosophyKeys[index];
-                        philosophyContent.innerHTML = `<p>${DATA.philosophy[key]}</p>`;
+                        philosophyContent.innerHTML = `<p class="text-justify">${DATA.philosophy[key]}</p>`;
                     }
                     philosophyContent.style.opacity = 1;
                 }, 300);
             };
             
             philosophyContent.innerHTML = `<p class="text-center text-gray-500">Toca un tema para iniciar el recorrido.</p>`;
-            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, 8000, philosophyContent);
+            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, { intervalTime: 10000, scrollTarget: philosophyContent });
             
             // --- Sección de Módulos ---
             const modulesGrid = document.getElementById('modules-grid');
@@ -410,7 +419,7 @@
                 }, 400);
             };
 
-            createCarousel(modulesGrid, moduleCards, moduleContentUpdater, 5000, moduleDisplay);
+            createCarousel(modulesGrid, moduleCards, moduleContentUpdater, { intervalTime: 5000, scrollTarget: moduleDisplay });
 
             // --- Sección ADN de Marca ---
             const dnaGrid = document.getElementById('dna-grid');
@@ -428,7 +437,7 @@
                 dnaCards.push(item);
             });
 
-            createCarousel(dnaGrid, dnaCards, () => {}, 5000, dnaGrid);
+            createCarousel(dnaGrid, dnaCards, () => {}, { intervalTime: 5000, scrollTarget: dnaGrid });
 
             // --- Gráfico de Impacto ---
             const impactChartCtx = document.getElementById('impactChart').getContext('2d');
