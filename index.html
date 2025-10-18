@@ -306,16 +306,18 @@
             };
 
             // --- Lógica General de Carrusel ---
-            function createCarousel(container, items, contentUpdater, intervalTime = 5000) {
+            function createCarousel(container, items, contentUpdater, intervalTime = 5000, scrollTarget) {
                 let interval;
                 let isRunning = false;
+                let currentIndex = 0;
                 
                 function startCarousel(startIndex) {
                     clearInterval(interval);
-                    let currentIndex = startIndex;
+                    currentIndex = startIndex;
                     isRunning = true;
 
                     function showNext() {
+                        if (!isRunning) return;
                         items.forEach((item, index) => {
                             item.classList.toggle('active', index === currentIndex);
                             item.classList.toggle('inactive', index !== currentIndex);
@@ -323,7 +325,7 @@
 
                         contentUpdater(currentIndex);
                         
-                        currentIndex = (currentIndex + 1) % items.length; // Loop infinitely
+                        currentIndex = (currentIndex + 1) % items.length;
                     }
                     
                     showNext();
@@ -333,8 +335,7 @@
                 function stopCarousel() {
                     clearInterval(interval);
                     isRunning = false;
-                    items.forEach(item => item.classList.remove('active', 'inactive'));
-                    contentUpdater(-1); // Reset content display
+                    // No remover clases para que el item seleccionado permanezca visible
                 }
 
                 container.addEventListener('click', e => {
@@ -343,8 +344,8 @@
                         if (isRunning) {
                             stopCarousel();
                         } else {
-                            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            setTimeout(() => startCarousel(parseInt(item.dataset.index)), 300);
+                           scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                           setTimeout(() => startCarousel(parseInt(item.dataset.index)), 300);
                         }
                     }
                 });
@@ -370,7 +371,7 @@
             };
             
             philosophyContent.innerHTML = `<p class="text-center text-gray-500">Toca un tema para iniciar el recorrido.</p>`;
-            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, 8000); // Increased time to 8 seconds
+            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, 8000, philosophyContent);
             
             // --- Sección de Módulos ---
             const modulesGrid = document.getElementById('modules-grid');
@@ -398,9 +399,9 @@
                         const module = DATA.modules[key];
                         moduleDisplay.innerHTML = `
                             <div class="text-center md:text-left">
-                                <div class="text-6xl">${module.icon}</div>
-                                <h3 class="mt-4 text-3xl font-bold text-gray-900">${module.name}</h3>
-                                <p class="mt-2 text-xl text-gray-600">${module.func}</p>
+                                <div class="text-5xl sm:text-6xl">${module.icon}</div>
+                                <h3 class="mt-4 text-2xl sm:text-3xl font-bold text-gray-900">${module.name}</h3>
+                                <p class="mt-2 text-lg sm:text-xl text-gray-600">${module.func}</p>
                             </div>
                         `;
                     }
@@ -409,7 +410,7 @@
                 }, 400);
             };
 
-            createCarousel(modulesGrid, moduleCards, moduleContentUpdater);
+            createCarousel(modulesGrid, moduleCards, moduleContentUpdater, 5000, moduleDisplay);
 
             // --- Sección ADN de Marca ---
             const dnaGrid = document.getElementById('dna-grid');
@@ -427,7 +428,7 @@
                 dnaCards.push(item);
             });
 
-            createCarousel(dnaGrid, dnaCards, () => {});
+            createCarousel(dnaGrid, dnaCards, () => {}, 5000, dnaGrid);
 
             // --- Gráfico de Impacto ---
             const impactChartCtx = document.getElementById('impactChart').getContext('2d');
