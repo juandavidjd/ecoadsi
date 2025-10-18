@@ -111,13 +111,29 @@
         .dna-card.inactive {
             opacity: 0.6;
         }
+        
+        /* Animación de pulso para enlaces importantes */
+        @keyframes subtle-pulse {
+            0%, 100% {
+                transform: scale(1);
+                text-shadow: 0 0 4px rgba(0, 224, 255, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                text-shadow: 0 0 12px rgba(0, 224, 255, 0.8);
+            }
+        }
+        .pulsing-link {
+            animation: subtle-pulse 2.5s infinite ease-in-out;
+            display: inline-block; /* Necesario para que transform funcione */
+        }
     </style>
 </head>
 <body class="text-gray-800 antialiased">
 
     <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="ecosistema_adsi_manifiesto.html" class="text-2xl font-extrabold text-brand-blue header-link-interactive">🧠 ADSI</a>
+            <a href="ecosistema_adsi_manifiesto.html" class="text-2xl font-extrabold text-brand-blue header-link-interactive pulsing-link">🧠 ADSI</a>
             <nav class="hidden md:flex space-x-6 text-gray-600 font-medium">
                 <a href="#filosofia" class="hover:text-brand-blue transition">Filosofía</a>
                 <a href="#estructura" class="hover:text-brand-blue transition">Estructura</a>
@@ -251,7 +267,7 @@
 
     <footer class="bg-gray-800 text-white py-12">
         <div class="container mx-auto px-6 text-center">
-            <p class="text-2xl font-semibold">Ecosistema ADSI</p>
+            <a href="ecosistema_adsi_manifiesto.html" class="text-2xl font-semibold pulsing-link text-white hover:text-gray-200 transition">Ecosistema ADSI</a>
             <p class="mt-2 text-gray-400">Juntos, transformamos confianza en resultados.<br>Confianza entre datos, decisiones y personas.</p>
         </div>
     </footer>
@@ -345,8 +361,6 @@
                     const prevKey = currentIndex > 0 ? moduleKeys[currentIndex - 1] : null;
                     const nextKey = currentIndex < moduleKeys.length - 1 ? moduleKeys[currentIndex + 1] : null;
                     
-                    let contentHtml = (moduleKey === 'retroalimentacion') ? `...` : `...`; // Simplified for brevity
-
                      moduleDisplay.innerHTML = `
                         <div class="flex-grow">
                              ${ (moduleKey === 'retroalimentacion') ? `
@@ -414,11 +428,17 @@
                         card.classList.toggle('inactive', index !== currentIndex);
                     });
                     
-                    currentIndex = (currentIndex + 1) % dnaCards.length;
+                    currentIndex = (currentIndex + 1);
+                    if (currentIndex >= dnaCards.length) {
+                         clearInterval(dnaInterval);
+                         setTimeout(() => {
+                             dnaCards.forEach(card => card.classList.remove('active', 'inactive'));
+                         }, 1000);
+                    }
                 }
                 
-                showNext(); // Show the first one immediately
-                dnaInterval = setInterval(showNext, 5000); // Change every 5 seconds
+                showNext(); 
+                dnaInterval = setInterval(showNext, 5000);
             }
 
             dnaGrid.addEventListener('click', e => {
