@@ -17,25 +17,19 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <meta name="theme-color" content="#0046FF">
   
-  <!-- =============================================================== -->
-  <!-- ============ METADATOS PARA COMPARTIR EN REDES (OG & TWITTER) == -->
-  <!-- =============================================================== -->
-  <meta name="description" content="Ecosistema ADSI — Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
+  <meta name="description" content="Ecosistema ADSI — Tecnología con propósito. Inteligencia que piensa, siente y actúa contigo. Transformamos confianza en resultados.">
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://juandavidjd.github.io/ecoadsi/ecosistema_adsi_manifiesto.html">
   <meta property="og:title" content="Ecosistema ADSI">
-  <meta property="og:description" content="Análisis, Diseño, Desarrollo e Implementación de Sistemas de Información. Un sistema vivo que evoluciona contigo.">
+  <meta property="og:description" content="Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
   <meta property="og:image" content="https://juandavidjd.github.io/ecoadsi/favicon-512.jpg">
-  <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:width" content="512">
-  <meta property="og:image:height" content="512">
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://juandavidjd.github.io/ecoadsi/ecosistema_adsi_manifiesto.html">
-  <meta name="twitter:title" content="Ecosistema ADSI">
-  <meta name="twitter:description" content="Análisis, Diseño, Desarrollo e Implementación de Sistemas de Información. Un sistema vivo que evoluciona contigo.">
-  <meta name="twitter:image" content="https://juandavidjd.github.io/ecoadsi/favicon-512.jpg">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://juandavidjd.github.io/ecoadsi/ecosistema_adsi_manifiesto.html">
+  <meta property="twitter:title" content="Ecosistema ADSI">
+  <meta property="twitter:description" content="Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
+  <meta property="twitter:image" content="https://juandavidjd.github.io/ecoadsi/favicon-512.jpg">
   <!-- =============================================================== -->
   
   <style>
@@ -54,7 +48,7 @@
     .bg-gray-tech { background-color: #2D2D2D; }
     .text-cyan-accent { color: #00E0FF; }
 
-    #network-canvas, #gray-canvas, #vision-canvas {
+    .animated-canvas {
       position: absolute; top: 0; left: 0;
       width: 100%; height: 100%;
       display: block; z-index: 1;
@@ -73,14 +67,22 @@
       flex-direction: row;
       align-items: center;
       gap: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
-    .module-card:hover, .module-card.active {
-      background-color: #0046FF; 
-      color: #fff;
-      transform: translateY(-6px);
-      box-shadow: 0 10px 25px rgba(0,70,255,0.3);
-      border-color: #00E0FF;
+    .module-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(0, 70, 255, 0.15);
     }
+    .module-card.active {
+        border-color: #00E0FF;
+        background-color: #0d4ed81a;
+        transform: scale(1.03);
+        box-shadow: 0 4px 15px rgba(0, 100, 255, 0.2);
+    }
+     .module-card.active h3 {
+        color: #0046FF;
+    }
+
     .module-card h3 {
       white-space: nowrap;
       font-size: 1.125rem;
@@ -142,18 +144,18 @@
 <body class="antialiased">
 
   <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold font-poppins header-link-interactive">
-        🧠 <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">Ecosistema ADSI</span>
+    <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+      <a href="index.html" class="text-3xl sm:text-2xl font-bold font-poppins header-link-interactive">
+        🧠 <span class="hidden sm:inline bg-clip-text text-transparent bg-gradient-to-r from-[#0046FF] to-[#00E0FF]">Ecosistema ADSI</span>
       </a>
-      <a href="#contacto" class="bg-[#0046FF] text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all">
+      <a href="#contacto" class="bg-[#0046FF] text-white px-5 py-2 sm:px-6 rounded-full hover:bg-opacity-90 transition-all text-sm sm:text-base">
         Conecta
       </a>
     </nav>
   </header>
 
   <section id="hero" class="hero-gradient text-white py-24 md:py-32 relative overflow-hidden">
-    <canvas id="network-canvas"></canvas>
+    <canvas id="network-canvas" class="animated-canvas"></canvas>
     <div class="container mx-auto px-6 text-center content-z">
       <h1 class="text-5xl md:text-6xl font-extrabold">Ecosistema ADSI</h1>
       <h2 class="text-xl md:text-2xl mt-4 opacity-90">Análisis, Diseño, Desarrollo e Implementación de Sistemas de Información.</h2>
@@ -161,8 +163,9 @@
     </div>
   </section>
 
-  <section id="ecosystem-intro" class="py-20 bg-gray-50 text-center">
-    <div class="container mx-auto px-6">
+  <section id="ecosystem-intro" class="py-20 bg-gray-50 text-center relative overflow-hidden">
+    <canvas id="intro-canvas" class="animated-canvas"></canvas>
+    <div class="container mx-auto px-6 content-z">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800">🔹 Un sistema vivo que evoluciona contigo.</h2>
       <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-600">
         El Ecosistema ADSI conecta estrategia, tecnología y acción en una red inteligente de resultados.
@@ -173,7 +176,7 @@
   </section>
 
   <section id="module-details" class="bg-gray-tech text-white py-24 relative overflow-hidden">
-    <canvas id="gray-canvas"></canvas>
+    <canvas id="gray-canvas" class="animated-canvas"></canvas>
     <div class="container mx-auto px-6 relative z-10">
       <div id="module-content-area" class="min-h-[450px] flex items-center justify-center text-center">
         <p class="text-2xl opacity-50 font-poppins">Selecciona un módulo para ver los detalles</p>
@@ -182,7 +185,7 @@
   </section>
 
   <section id="vision" class="py-24 bg-gray-tech text-white relative overflow-hidden">
-    <canvas id="vision-canvas"></canvas>
+    <canvas id="vision-canvas" class="animated-canvas"></canvas>
     <div class="container mx-auto px-6 text-center content-z">
       <h2 class="text-3xl md:text-4xl font-bold">✨ Más que tecnología, somos evolución estratégica.</h2>
       <p class="mt-6 max-w-3xl mx-auto text-lg opacity-90">
@@ -192,14 +195,15 @@
     </div>
   </section>
 
-  <footer id="contacto" class="bg-white py-20 text-center">
-    <div class="container mx-auto px-6">
+  <footer id="contacto" class="bg-white py-20 text-center relative overflow-hidden">
+    <canvas id="contact-canvas" class="animated-canvas"></canvas>
+    <div class="container mx-auto px-6 content-z">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-800">📩 Conecta con el equipo ADSI</h2>
       <p class="mt-4 max-w-2xl mx-auto text-gray-600">
         Acompañamos tu evolución digital con soluciones inteligentes, medibles y orientadas a resultados.
       </p>
       <div class="mt-10 space-y-4">
-        <a href="https://wa.me/" target="_blank" class="block text-[#25D366] font-semibold">WhatsApp +57(311)436-8937</a>
+        <a href="https://wa.me/573114368937" target="_blank" class="block text-[#25D366] font-semibold">WhatsApp +57(311)436-8937</a>
         <a href="mailto:adsicctcol@gmail.com" class="block text-gray-800">adsicctcol@gmail.com</a>
         <a href="http://www.linkedin.com/in/adsicctcol" target="_blank" class="block text-gray-800">www.linkedin.com/in/adsicctcol</a>
       </div>
@@ -229,7 +233,7 @@
         retroalimentacion: { title: "🔁 Cada interacción mejora el sistema.", text: "El Ciclo de Retroalimentación ADSI mide métricas clave, identifica oportunidades y ajusta estrategias en tiempo real para impulsar un crecimiento sostenido.", isFeedback: true, details: { "📊 Tráfico digital": { description: "Mide el volumen y la calidad de los usuarios que llegan a tus plataformas digitales, permitiendo evaluar el alcance de las estrategias de marketing y la visibilidad de la marca." }, "💬 Engagement": { description: "Analiza cómo interactúan los usuarios con tu contenido. Un alto engagement indica un contenido relevante y una comunidad activa, fortaleciendo la lealtad del cliente." }, "🎯 Conversión": { description: "Es el indicador clave del éxito. Mide el porcentaje de usuarios que realizan una acción deseada, como una compra o un registro, validando la efectividad del embudo de ventas." }, "🤝 Satisfacción": { description: "Mide el grado de contentamiento del cliente con el producto o servicio a través de encuestas y calificaciones, siendo vital para la retención y la mejora continua." }, "⚙️ Eficiencia": { description: "Evalúa el rendimiento de los procesos internos, midiendo la relación entre los recursos invertidos y los resultados obtenidos para maximizar la rentabilidad operativa." }}}
       };
       
-      const moduleIcons = { cerebro: "🧠", pasarela: "💳", catalogo: "🧱", operacion: "⚡", envios: "🚚", retroalimentacion: "🔄" };
+      const moduleIcons = { cerebro: "🧠", pasarela: "💳", catalogo: "🧱", operacion: "⚙️", envios: "🚚", retroalimentacion: "🔄" };
       const moduleNames = { cerebro: "Cerebro", pasarela: "Pasarela", catalogo: "Catálogo", operacion: "Operación", envios: "Envíos", retroalimentacion: "Retroalimentación" };
       
       const selector = document.getElementById("module-selector");
@@ -309,32 +313,56 @@
       }, { threshold: 0.1 });
       observer.observe(detailsSection);
 
-      function setupCanvasAnimation(id, {nodeColor='rgba(0,224,255,0.5)', lineColor='rgba(0,224,255,0.2)', numNodes=70}={}) {
-        const c = document.getElementById(id);
-        if (!c) return;
-        const ctx = c.getContext('2d');
-        const section = c.parentElement;
+      function setupCanvasAnimation(id, options) {
+        const canvas = document.getElementById(id);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const parent = canvas.parentElement;
         let nodes = [];
+        const config = Object.assign({
+            nodeColor: 'rgba(0, 70, 255, 0.2)',
+            lineColor: 'rgba(0, 70, 255, 0.1)',
+            numNodes: 50
+        }, options);
+
         function resize() {
-          c.width = section.clientWidth;
-          c.height = section.clientHeight;
-          nodes = Array.from({length:numNodes},()=>({ x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6 }));
+            canvas.width = parent.clientWidth;
+            canvas.height = parent.clientHeight;
+            nodes = Array.from({ length: config.numNodes }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            }));
         }
+
         function draw() {
-          ctx.clearRect(0,0,c.width,c.height);
-          for (const n of nodes) {
-            n.x += n.vx; n.y += n.vy;
-            if (n.x<=0||n.x>=c.width) n.vx*=-1;
-            if (n.y<=0||n.y>=c.height) n.vy*=-1;
-            ctx.beginPath(); ctx.arc(n.x,n.y,2.3,0,Math.PI*2); ctx.fillStyle=nodeColor; ctx.fill();
-          }
-          for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
-            const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
-            const dist=Math.sqrt(dx*dx+dy*dy);
-            if (dist<180){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
-              ctx.strokeStyle=lineColor;ctx.lineWidth=1-dist/180;ctx.stroke();}
-          }
-          requestAnimationFrame(draw);
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            nodes.forEach(n => {
+                n.x += n.vx; n.y += n.vy;
+                if (n.x <= 0 || n.x >= canvas.width) n.vx *= -1;
+                if (n.y <= 0 || n.y >= canvas.height) n.vy *= -1;
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = config.nodeColor;
+                ctx.fill();
+            });
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = config.lineColor;
+                        ctx.lineWidth = 1 - dist / 150;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(draw);
         }
         
         let resizeTimeout;
@@ -347,9 +375,11 @@
         draw();
       }
 
-      setupCanvasAnimation('network-canvas',{numNodes:80}); 
-      setupCanvasAnimation('vision-canvas',{nodeColor:'rgba(255,255,255,0.4)',lineColor:'rgba(255,255,255,0.15)',numNodes:60}); 
-      setupCanvasAnimation('gray-canvas',{nodeColor:'rgba(0,224,255,0.4)',lineColor:'rgba(0,224,255,0.15)',numNodes:65});
+      setupCanvasAnimation('network-canvas', { nodeColor: 'rgba(255, 255, 255, 0.5)', lineColor: 'rgba(255, 255, 255, 0.2)', numNodes: 70 });
+      setupCanvasAnimation('intro-canvas');
+      setupCanvasAnimation('gray-canvas');
+      setupCanvasAnimation('vision-canvas');
+      setupCanvasAnimation('contact-canvas');
 
       const lastModule = localStorage.getItem('lastActiveModule');
       if (lastModule && modulesData[lastModule]) {
