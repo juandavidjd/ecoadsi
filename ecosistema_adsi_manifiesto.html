@@ -139,7 +139,7 @@
 
     @media (max-width: 768px) {
       .sticky-nav-button .sticky-nav-text { display: none; }
-      .sticky-nav-button { padding: 0.75rem; }
+      .sticky-nav-button { padding: 0.75rem; font-size: 1.5rem; }
       #sticky-module-nav-content { justify-content: space-around; }
     }
   </style>
@@ -221,7 +221,7 @@
   </footer>
 
   <div id="sticky-module-nav">
-    <div id="sticky-module-nav-content" class="container mx-auto px-4 flex justify-between items-center">
+    <div id="sticky-module-nav-content" class="container mx-auto px-2 sm:px-4 flex justify-around items-center">
     </div>
   </div>
 
@@ -229,12 +229,12 @@
     document.addEventListener("DOMContentLoaded", () => {
       // Data for modules and their details
       const modulesData = {
-        cerebro: { title: "🎯 Inteligencia estratégica que decide con datos.", text: "El CEREBRO ADSI convierte información en decisiones precisas, analizando comportamientos, midiendo rendimiento y anticipando oportunidades para ajustar estrategias de forma automática.", details: { "📊 Análisis predictivo": { icon: "📈", description: "Utilizamos modelos de datos para identificar patrones y tendencias futuras, permitiendo tomar decisiones proactivas que optimizan el rendimiento y minimizan riesgos antes de que ocurran.", duration: 8000 }, "🔄 Sincronización estratégica": { icon: "🤝", description: "Aseguramos que todas las acciones operativas estén perfectamente alineadas con los objetivos de negocio, creando una coherencia total entre la planificación y la ejecución.", duration: 8000 }, "🧠 Medición continua": { icon: "⏱️", description: "Monitorizamos en tiempo real los indicadores clave de rendimiento (KPIs), ofreciendo dashboards claros que permiten evaluar la salud del sistema y el progreso hacia las metas.", duration: 8000 }}},
-        pasarela: { title: "💰 Pagos seguros, flujos estables, conexión total.", text: "La PASARELA ADSI garantiza transacciones seguras, fluidas y trazables, unificando pagos, validaciones y conciliaciones bajo una conexión cifrada que asegura estabilidad operativa 24/7.", details: { "🔗 Conectividad estable": { icon: "🌐", description: "Nuestra infraestructura garantiza una conexión robusta y sin interrupciones con las principales entidades financieras, asegurando que cada transacción se procese de manera confiable.", duration: 5000 }, "💵 Transacciones en tiempo real": { icon: "💸", description: "Procesamos pagos de forma instantánea, mejorando el flujo de caja y la experiencia del cliente al confirmar las operaciones al momento, sin demoras.", duration: 5000 }, "🔒 Seguridad avanzada": { icon: "🛡️", description: "Implementamos múltiples capas de seguridad, incluyendo cifrado de extremo a extremo y protocolos anti-fraude, para proteger cada transacción y dato sensible.", duration: 8000 }}},
-        catalogo: { title: "📦 Todo tu portafolio, sincronizado y visible.", text: "El CATÁLOGO ADSI centraliza productos, servicios y datos en una interfaz autogestionable. Cada actualización se refleja en tiempo real en todos los canales.", details: { "🖥️ Visualización en tiempo real": { icon: "💻", description: "Ofrecemos una vista unificada y actualizada de todo tu portafolio, accesible desde cualquier dispositivo, garantizando que equipos de ventas y clientes vean siempre la misma información.", duration: 8000 }, "📊 Actualización automática": { icon: "🔄", description: "Cualquier cambio en precios, stock o descripciones se propaga instantáneamente a todos los puntos de venta (web, apps, etc.), eliminando inconsistencias.", duration: 5000 }, "💡 Gestión inteligente": { icon: "🔧", description: "Permite organizar productos por categorías, etiquetas y atributos personalizados, facilitando la búsqueda, el filtrado y la gestión masiva de información.", duration: 5000 }}},
-        operacion: { title: "⚙️ Automatización que convierte estrategia en acción.", text: "La OPERACIÓN ADSI coordina tareas, procesos y equipos en tiempo real, transformando la planificación en resultados tangibles y garantizando eficiencia medible.", details: { "🔁 Control continuo": { icon: "🕹️", description: "Supervisamos cada etapa de los flujos de trabajo, asignando recursos de forma inteligente y notificando a los responsables para asegurar que nada se quede atrás.", duration: 5000 }, "🧩 Integración total": { icon: "🔗", description: "Conectamos herramientas y departamentos en una única plataforma, rompiendo silos de información y permitiendo una colaboración fluida y sin fricciones.", duration: 5000 }, "🎯 Productividad medible": { icon: "🚀", description: "Generamos reportes detallados sobre tiempos de ciclo, uso de recursos y cuellos de botella, permitiendo optimizar continuamente la eficiencia operativa.", duration: 8000 }}},
-        envios: { title: "🚀 Logística inteligente con trazabilidad total.", text: "El módulo ENVÍOS ADSI asegura precisión y cumplimiento en cada entrega, optimizando rutas y notificando en tiempo real para una experiencia confiable.", details: { "📍 Seguimiento dinámico": { icon: "🗺️", description: "Tanto el equipo interno como el cliente final pueden ver la ubicación del envío en un mapa en tiempo real, aumentando la transparencia y reduciendo la incertidumbre.", duration: 5000 }, "⏱️ Entregas garantizadas": { icon: "📦", description: "Nuestro sistema calcula las rutas más eficientes y estima tiempos de entrega precisos, coordinando con los transportistas para asegurar el cumplimiento de los plazos.", duration: 8000 }, "📦 Optimización logística": { icon: "🚚", description: "Analizamos datos históricos de entregas para optimizar rutas, consolidar cargas y reducir costos operativos, mejorando la rentabilidad de la cadena de suministro.", duration: 8000 }}},
-        retroalimentacion: { title: "🔁 Cada interacción mejora el sistema.", text: "El Ciclo de Retroalimentación ADSI mide métricas clave, identifica oportunidades y ajusta estrategias en tiempo real para impulsar un crecimiento sostenido.", isFeedback: true, details: { "📊 Tráfico digital": { description: "Mide el volumen y la calidad de los usuarios que llegan a tus plataformas digitales, permitiendo evaluar el alcance de las estrategias de marketing y la visibilidad de la marca.", duration: 5000 }, "💬 Engagement": { description: "Analiza cómo interactúan los usuarios con tu contenido. Un alto engagement indica un contenido relevante y una comunidad activa, fortaleciendo la lealtad del cliente.", duration: 5000 }, "🎯 Conversión": { description: "Es el indicador clave del éxito. Mide el porcentaje de usuarios que realizan una acción deseada, como una compra o un registro, validando la efectividad del embudo de ventas.", duration: 5000 }, "🤝 Satisfacción": { description: "Mide el grado de contentamiento del cliente con el producto o servicio a través de encuestas y calificaciones, siendo vital para la retención y la mejora continua.", duration: 5000 }, "⚙️ Eficiencia": { description: "Evalúa el rendimiento de los procesos internos, midiendo la relación entre los recursos invertidos y los resultados obtenidos para maximizar la rentabilidad operativa.", duration: 5000 }}}
+        cerebro: { title: "🎯 Inteligencia estratégica que decide con datos.", text: "El CEREBRO ADSI convierte información en decisiones precisas, analizando comportamientos, midiendo rendimiento y anticipando oportunidades para ajustar estrategias de forma automática.", details: { "📊 Análisis predictivo": { icon: "📈", description: "Utilizamos modelos de datos para identificar patrones y tendencias futuras, permitiendo tomar decisiones proactivas que optimizan el rendimiento y minimizan riesgos antes de que ocurran." }, "🔄 Sincronización estratégica": { icon: "🤝", description: "Aseguramos que todas las acciones operativas estén perfectamente alineadas con los objetivos de negocio, creando una coherencia total entre la planificación y la ejecución." }, "🧠 Medición continua": { icon: "⏱️", description: "Monitorizamos en tiempo real los indicadores clave de rendimiento (KPIs), ofreciendo dashboards claros que permiten evaluar la salud del sistema y el progreso hacia las metas." }}},
+        pasarela: { title: "💰 Pagos seguros, flujos estables, conexión total.", text: "La PASARELA ADSI garantiza transacciones seguras, fluidas y trazables, unificando pagos, validaciones y conciliaciones bajo una conexión cifrada que asegura estabilidad operativa 24/7.", details: { "🔗 Conectividad estable": { icon: "🌐", description: "Nuestra infraestructura garantiza una conexión robusta y sin interrupciones con las principales entidades financieras, asegurando que cada transacción se procese de manera confiable." }, "💵 Transacciones en tiempo real": { icon: "💸", description: "Procesamos pagos de forma instantánea, mejorando el flujo de caja y la experiencia del cliente al confirmar las operaciones al momento, sin demoras." }, "🔒 Seguridad avanzada": { icon: "🛡️", description: "Implementamos múltiples capas de seguridad, incluyendo cifrado de extremo a extremo y protocolos anti-fraude, para proteger cada transacción y dato sensible." }}},
+        catalogo: { title: "📦 Todo tu portafolio, sincronizado y visible.", text: "El CATÁLOGO ADSI centraliza productos, servicios y datos en una interfaz autogestionable. Cada actualización se refleja en tiempo real en todos los canales.", details: { "🖥️ Visualización en tiempo real": { icon: "💻", description: "Ofrecemos una vista unificada y actualizada de todo tu portafolio, accesible desde cualquier dispositivo, garantizando que equipos de ventas y clientes vean siempre la misma información." }, "📊 Actualización automática": { icon: "🔄", description: "Cualquier cambio en precios, stock o descripciones se propaga instantáneamente a todos los puntos de venta (web, apps, etc.), eliminando inconsistencias." }, "💡 Gestión inteligente": { icon: "🔧", description: "Permite organizar productos por categorías, etiquetas y atributos personalizados, facilitando la búsqueda, el filtrado y la gestión masiva de información." }}},
+        operacion: { title: "⚙️ Automatización que convierte estrategia en acción.", text: "La OPERACIÓN ADSI coordina tareas, procesos y equipos en tiempo real, transformando la planificación en resultados tangibles y garantizando eficiencia medible.", details: { "🔁 Control continuo": { icon: "🕹️", description: "Supervisamos cada etapa de los flujos de trabajo, asignando recursos de forma inteligente y notificando a los responsables para asegurar que nada se quede atrás." }, "🧩 Integración total": { icon: "🔗", description: "Conectamos herramientas y departamentos en una única plataforma, rompiendo silos de información y permitiendo una colaboración fluida y sin fricciones." }, "🎯 Productividad medible": { icon: "🚀", description: "Generamos reportes detallados sobre tiempos de ciclo, uso de recursos y cuellos de botella, permitiendo optimizar continuamente la eficiencia operativa." }}},
+        envios: { title: "🚀 Logística inteligente con trazabilidad total.", text: "El módulo ENVÍOS ADSI asegura precisión y cumplimiento en cada entrega, optimizando rutas y notificando en tiempo real para una experiencia confiable.", details: { "📍 Seguimiento dinámico": { icon: "🗺️", description: "Tanto el equipo interno como el cliente final pueden ver la ubicación del envío en un mapa en tiempo real, aumentando la transparencia y reduciendo la incertidumbre." }, "⏱️ Entregas garantizadas": { icon: "📦", description: "Nuestro sistema calcula las rutas más eficientes y estima tiempos de entrega precisos, coordinando con los transportistas para asegurar el cumplimiento de los plazos." }, "📦 Optimización logística": { icon: "🚚", description: "Analizamos datos históricos de entregas para optimizar rutas, consolidar cargas y reducir costos operativos, mejorando la rentabilidad de la cadena de suministro." }}},
+        retroalimentacion: { title: "🔁 Cada interacción mejora el sistema.", text: "El Ciclo de Retroalimentación ADSI mide métricas clave, identifica oportunidades y ajusta estrategias en tiempo real para impulsar un crecimiento sostenido.", isFeedback: true, details: { "📊 Tráfico digital": { description: "Mide el volumen y la calidad de los usuarios que llegan a tus plataformas digitales, permitiendo evaluar el alcance de las estrategias de marketing y la visibilidad de la marca." }, "💬 Engagement": { description: "Analiza cómo interactúan los usuarios con tu contenido. Un alto engagement indica un contenido relevante y una comunidad activa, fortaleciendo la lealtad del cliente." }, "🎯 Conversión": { description: "Es el indicador clave del éxito. Mide el porcentaje de usuarios que realizan una acción deseada, como una compra o un registro, validando la efectividad del embudo de ventas." }, "🤝 Satisfacción": { description: "Mide el grado de contentamiento del cliente con el producto o servicio a través de encuestas y calificaciones, siendo vital para la retención y la mejora continua." }, "⚙️ Eficiencia": { description: "Evalúa el rendimiento de los procesos internos, midiendo la relación entre los recursos invertidos y los resultados obtenidos para maximizar la rentabilidad operativa." }}}
       };
       
       const moduleKeys = Object.keys(modulesData);
@@ -246,7 +246,29 @@
       const detailsSection = document.getElementById("module-details");
       const stickyNav = document.getElementById("sticky-module-nav");
       const stickyNavContent = document.getElementById("sticky-module-nav-content");
-      let detailCarouselState = { interval: null, isRunning: false };
+      
+      let detailCarouselState = { interval: null, pauseTimeout: null, isRunning: false };
+      let isDetailsSectionVisible = false;
+
+       area.insertAdjacentHTML('beforeend', `
+        <div id="pause-indicator" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 hidden rounded-lg pointer-events-none">
+            <svg class="w-16 h-16 text-white opacity-75" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 6a1 1 0 00-1 1v6a1 1 0 102 0V7a1 1 0 00-1-1zm2 0a1 1 0 00-1 1v6a1 1 0 102 0V7a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+        </div>
+    `);
+    const pauseIndicator = document.getElementById('pause-indicator');
+
+
+      const detailsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            isDetailsSectionVisible = entry.isIntersecting;
+            if (!isDetailsSectionVisible) {
+                stopDetailCarousel();
+            }
+        });
+      }, { threshold: 0.1 });
+      detailsObserver.observe(detailsSection);
 
       function updateDetailContent(moduleId, detailKey) {
         const detailData = modulesData[moduleId].details[detailKey];
@@ -276,18 +298,20 @@
       }
       
       function stopDetailCarousel() {
-        if (detailCarouselState.interval) {
-            clearTimeout(detailCarouselState.interval);
-            detailCarouselState.interval = null;
-            detailCarouselState.isRunning = false;
-        }
+        clearTimeout(detailCarouselState.interval);
+        clearTimeout(detailCarouselState.pauseTimeout);
+        detailCarouselState.interval = null;
+        detailCarouselState.pauseTimeout = null;
+        detailCarouselState.isRunning = false;
+        pauseIndicator.classList.add('hidden');
       }
 
-      function startDetailCarousel(moduleId, subItems, isFeedback = false) {
+      function startDetailCarousel(moduleId, subItems, isFeedback = false, startIndex = 0) {
         stopDetailCarousel();
         detailCarouselState.isRunning = true;
-        let currentIndex = 0;
+        let currentIndex = startIndex;
         let rounds = 0;
+        const totalItems = subItems.length;
 
         const advance = () => {
             if (!detailCarouselState.isRunning) return;
@@ -299,24 +323,19 @@
                 updateFeedbackDetail(currentItem.dataset.key, modulesData[moduleId].details[currentItem.dataset.key]);
             }
             
-            const detailData = modulesData[moduleId].details[currentItem.dataset.key];
-            const nextDuration = detailData.duration;
-            
             currentIndex++;
-            if (currentIndex >= subItems.length) {
+            
+            if (currentIndex >= totalItems) {
                 currentIndex = 0;
                 rounds++;
             }
 
-            if (rounds >= 2) {
-                const currentModuleIndex = moduleKeys.indexOf(moduleId);
-                const nextModuleIndex = (currentModuleIndex + 1) % moduleKeys.length;
-                const nextModuleId = moduleKeys[nextModuleIndex];
-                handleModuleSelection(nextModuleId);
+            if (rounds >= 1) {
+                stopDetailCarousel();
                 return;
             }
             
-            detailCarouselState.interval = setTimeout(advance, nextDuration);
+            detailCarouselState.interval = setTimeout(advance, 8000);
         };
         
         advance();
@@ -330,14 +349,14 @@
         setTimeout(() => {
           let subItems;
           if (data.isFeedback) {
-            area.innerHTML = `<div class="text-center w-full"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='max-w-3xl mx-auto text-lg mb-8 opacity-90 text-justify'>${data.text}</p><div id="feedback-detail-content" class="min-h-[120px] bg-black/20 p-6 rounded-lg mb-8 text-left"><p class="text-xl opacity-70 text-center">Selecciona un indicador para ver su importancia.</p></div><div id="feedback-kpi-selector" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">${Object.keys(data.details).map(key => `<div class="feedback-kpi-card rounded-lg p-4 font-semibold text-center" data-key="${key}">${key}</div>`).join('')}</div></div>`;
+            area.innerHTML = `<div class="text-center w-full"><h2 class='text-3xl md:text-4xl font-bold mb-4'>${data.title}</h2><p class='max-w-3xl mx-auto text-lg mb-8 opacity-90 text-justify'>${data.text}</p><div id="feedback-detail-content" class="min-h-[120px] bg-black/20 p-6 rounded-lg mb-8 text-left"><p class="text-xl opacity-70 text-center">Selecciona un indicador.</p></div><div id="feedback-kpi-selector" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">${Object.keys(data.details).map(key => `<div class="feedback-kpi-card rounded-lg p-4 font-semibold text-center" data-key="${key}">${key}</div>`).join('')}</div></div>`;
             const kpiSelector = document.getElementById('feedback-kpi-selector');
             subItems = Array.from(kpiSelector.querySelectorAll('.feedback-kpi-card'));
             kpiSelector.addEventListener('click', e => { 
                 const card = e.target.closest('.feedback-kpi-card'); 
-                if(card) { 
-                    stopDetailCarousel();
-                    updateFeedbackDetail(card.dataset.key, data.details[card.dataset.key]); 
+                if(card) {
+                    const clickedIndex = subItems.indexOf(card);
+                    startDetailCarousel(moduleId, subItems, true, clickedIndex);
                 } 
             });
             startDetailCarousel(moduleId, subItems, true);
@@ -348,8 +367,8 @@
             submenu.addEventListener('click', e => { 
                 const subItem = e.target.closest('.detail-submenu-item'); 
                 if (subItem) { 
-                    stopDetailCarousel();
-                    updateDetailContent(moduleId, subItem.dataset.key); 
+                    const clickedIndex = subItems.indexOf(subItem);
+                    startDetailCarousel(moduleId, subItems, false, clickedIndex);
                 } 
             });
             startDetailCarousel(moduleId, subItems, false);
