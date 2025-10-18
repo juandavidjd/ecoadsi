@@ -307,7 +307,7 @@
 
             // --- Lógica General de Carrusel ---
             function createCarousel(container, items, contentUpdater, options) {
-                const { intervalTime = 5000, scrollTarget } = options;
+                const { intervalTime = 5000, scrollTarget, autoScroll = false } = options;
                 let state = {
                     intervalId: null,
                     isRunning: false,
@@ -330,6 +330,12 @@
                     const advance = () => {
                         if (!state.isRunning) return;
                         updateView(state.currentIndex);
+                        
+                        const activeItem = items[state.currentIndex];
+                        if (autoScroll && activeItem) {
+                            activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+
                         state.currentIndex = (state.currentIndex + 1) % items.length;
                     };
 
@@ -352,7 +358,8 @@
                     if (state.isRunning) {
                         pause(clickedIndex);
                     } else {
-                        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        const targetElement = autoScroll ? item : scrollTarget;
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         setTimeout(() => {
                             play(clickedIndex);
                         }, 300);
@@ -380,7 +387,7 @@
             };
             
             philosophyContent.innerHTML = `<p class="text-center text-gray-500">Toca un tema para iniciar el recorrido.</p>`;
-            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, { intervalTime: 10000, scrollTarget: philosophyContent });
+            createCarousel(philosophyContainer, philosophyTabs, philosophyContentUpdater, { intervalTime: 12000, scrollTarget: philosophyContent });
             
             // --- Sección de Módulos ---
             const modulesGrid = document.getElementById('modules-grid');
@@ -437,7 +444,7 @@
                 dnaCards.push(item);
             });
 
-            createCarousel(dnaGrid, dnaCards, () => {}, { intervalTime: 5000, scrollTarget: dnaGrid });
+            createCarousel(dnaGrid, dnaCards, () => {}, { intervalTime: 5000, scrollTarget: dnaGrid, autoScroll: true });
 
             // --- Gráfico de Impacto ---
             const impactChartCtx = document.getElementById('impactChart').getContext('2d');
