@@ -82,7 +82,7 @@
             transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
         }
 
-        .chart-container { position: relative; width: 100%; max-width: 800px; margin: auto; height: 300px; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin: auto; height: 400px; }
         @media (min-width: 768px) { .chart-container { height: 400px; } }
         html { scroll-behavior: smooth; }
         
@@ -495,7 +495,7 @@
                 moduleDisplay.style.transform = 'translateY(10px)';
                 setTimeout(() => {
                     if (index === -1) {
-                         moduleDisplay.innerHTML = `<img src="adsi-logo.png" alt="Diagrama del Ecosistema ADSI" class="w-full h-auto max-w-sm mx-auto rounded-xl object-contain p-4 md:p-0">`;
+                         moduleDisplay.innerHTML = `<img src="adsi-logo.jpg" alt="Diagrama del Ecosistema ADSI" class="w-full h-auto max-w-sm mx-auto rounded-xl object-contain p-4 md:p-0">`;
                     } else {
                         const key = moduleKeys[index];
                         const module = DATA.modules[key];
@@ -538,24 +538,103 @@
             const impactCards = Array.from(impactCardsContainer.querySelectorAll('.impact-card'));
             createCarousel(impactCardsContainer, impactCards, () => {}, { intervalTime: 5000, scrollTarget: impactCardsContainer, autoScroll: true });
 
-
             const impactChartCtx = document.getElementById('impactChart').getContext('2d');
             let impactChart;
+
             const createChart = () => {
-                if(impactChart) {
+                if (impactChart) {
                     impactChart.destroy();
                 }
+
+                const isMobile = window.innerWidth < 768;
+
+                const chartOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (c) => ` +${c.raw}%`
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                };
+
+                if (isMobile) {
+                    // Vertical Bar Chart for Mobile
+                    chartOptions.indexAxis = 'x';
+                    chartOptions.scales = {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: {
+                                callback: (v) => v + '%'
+                            }
+                        }
+                    };
+                } else {
+                    // Horizontal Bar Chart for Desktop
+                    chartOptions.indexAxis = 'y';
+                    chartOptions.scales = {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: {
+                                callback: (v) => v + '%'
+                            }
+                        },
+                        y: {
+                            grid: { display: false }
+                        }
+                    };
+                }
+
                 impactChart = new Chart(impactChartCtx, {
-                    type: 'bar', data: { labels: DATA.impact.labels, datasets: [{ label: '% de Mejora', data: DATA.impact.values, backgroundColor: ['rgba(0, 70, 255, 0.7)','rgba(0, 120, 255, 0.7)','rgba(0, 170, 255, 0.7)','rgba(0, 224, 255, 0.7)'], borderColor: ['rgba(0, 70, 255, 1)','rgba(0, 120, 255, 1)','rgba(0, 170, 255, 1)','rgba(0, 224, 255, 1)'], borderWidth: 1 }] },
-                    options: { indexAxis: 'y', maintainAspectRatio: false, responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` +${c.raw}%` } } }, scales: { x: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.05)' }, ticks: { callback: (v) => v + '%' } }, y: { grid: { display: false } } }, animation: { duration: 1500, easing: 'easeInOutQuart' } }
+                    type: 'bar',
+                    data: {
+                        labels: DATA.impact.labels,
+                        datasets: [{
+                            label: '% de Mejora',
+                            data: DATA.impact.values,
+                            backgroundColor: ['rgba(0, 70, 255, 0.7)', 'rgba(0, 120, 255, 0.7)', 'rgba(0, 170, 255, 0.7)', 'rgba(0, 224, 255, 0.7)'],
+                            borderColor: ['rgba(0, 70, 255, 1)', 'rgba(0, 120, 255, 1)', 'rgba(0, 170, 255, 1)', 'rgba(0, 224, 255, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: chartOptions
                 });
             }
+
             const chartObserver = new IntersectionObserver((entries) => {
-                if(entries[0].isIntersecting){ 
-                    createChart(); 
+                if (entries[0].isIntersecting) {
+                    createChart();
+                    chartObserver.unobserve(document.getElementById('impacto'));
                 }
             }, { threshold: 0.5 });
             chartObserver.observe(document.getElementById('impacto'));
+
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (impactChart) {
+                        createChart();
+                    }
+                }, 250);
+            });
             
             // --- Menú Móvil ---
             const hamburgerButton = document.getElementById('hamburger-button');
@@ -639,4 +718,3 @@
     </script>
 </body>
 </html>
-
