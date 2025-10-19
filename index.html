@@ -116,7 +116,7 @@
         .dna-card, .impact-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
         }
-        .dna-card:hover, .impact-card:hover {
+        .dna-card:hover, .pillar-card:hover, .impact-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 25px rgba(0, 120, 255, 0.15);
         }
@@ -351,6 +351,7 @@
             };
 
             let isDnaGridVisible = false;
+            let isPillarsGridVisible = false;
 
             // --- Lógica General de Carrusel ---
             function createCarousel(container, items, contentUpdater, options) {
@@ -395,7 +396,7 @@
                         updateView(state.currentIndex);
                         
                         const activeItem = items[useLogo ? state.currentIndex - 1 : state.currentIndex];
-                        if (autoScroll && activeItem && isDnaGridVisible) {
+                         if (autoScroll && activeItem && (isDnaGridVisible || isPillarsGridVisible)) {
                             activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
 
@@ -435,7 +436,11 @@
             // --- Sección de Pilares ---
             const pillarsContainer = document.getElementById('pillars-grid');
             const pillarCards = Array.from(pillarsContainer.querySelectorAll('.pillar-card'));
-            createCarousel(pillarsContainer, pillarCards, () => {}, { intervalTime: 5000, scrollTarget: pillarsContainer });
+            const pillarObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { isPillarsGridVisible = entry.isIntersecting; });
+            }, { threshold: 0.1 });
+            pillarObserver.observe(pillarsContainer);
+            createCarousel(pillarsContainer, pillarCards, () => {}, { intervalTime: 5000, scrollTarget: pillarsContainer, autoScroll: true });
 
             // --- Sección de Filosofía ---
             const philosophyContainer = document.getElementById('philosophy-tabs-container');
