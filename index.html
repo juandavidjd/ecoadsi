@@ -41,23 +41,23 @@
         .bg-brand-blue { background-color: #0046FF; }
         .border-brand-blue { border-color: #0046FF; }
         
-        .philosophy-tab, .pillar-card {
+        .philosophy-tab, .pillar-card, .impact-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
         }
-        .philosophy-tab.active, .pillar-card.active { 
+        .philosophy-tab.active, .pillar-card.active, .impact-card.active { 
             border-color: #0046FF; 
             background-color: #0046FF; 
             color: white;
             transform: translateY(-4px);
             box-shadow: 0 6px 20px rgba(0, 70, 255, 0.25);
         }
-         .pillar-card.active h3 {
+         .pillar-card.active h3, .impact-card.active p:first-child {
             color: white;
         }
-        .pillar-card.active p {
+        .pillar-card.active p, .impact-card.active p:last-child {
             color: rgba(255,255,255,0.9);
         }
-        .philosophy-tab.inactive, .pillar-card.inactive {
+        .philosophy-tab.inactive, .pillar-card.inactive, .impact-card.inactive {
              opacity: 0.6;
         }
 
@@ -113,7 +113,7 @@
         #mobile-menu.open {
             transform: translateX(0);
         }
-        .dna-card, .impact-card {
+        .dna-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
         }
         .dna-card:hover, .pillar-card:hover, .impact-card:hover {
@@ -272,22 +272,22 @@
                     <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Más allá de los números, el impacto se mide en la confianza y claridad que brindamos a nuestros aliados.</p>
                 </div>
                 <div class="mt-12 flex flex-col lg:flex-row gap-8 items-center">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center w-full">
-                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
-                            <p class="text-3xl font-bold text-brand-blue">+40%</p>
-                            <p class="mt-1 text-gray-600">en eficiencia operativa</p>
+                    <div id="impact-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center w-full cursor-pointer">
+                        <div data-index="0" class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue pointer-events-none">+40%</p>
+                            <p class="mt-1 text-gray-600 pointer-events-none">en eficiencia operativa</p>
                         </div>
-                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
-                            <p class="text-3xl font-bold text-brand-blue">+30%</p>
-                            <p class="mt-1 text-gray-600">en retención de clientes</p>
+                        <div data-index="1" class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue pointer-events-none">+30%</p>
+                            <p class="mt-1 text-gray-600 pointer-events-none">en retención de clientes</p>
                         </div>
-                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
-                            <p class="text-3xl font-bold text-brand-blue">+35%</p>
-                            <p class="mt-1 text-gray-600">en reducción de costos</p>
+                        <div data-index="2" class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue pointer-events-none">+35%</p>
+                            <p class="mt-1 text-gray-600 pointer-events-none">en reducción de costos</p>
                         </div>
-                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
-                            <p class="text-3xl font-bold text-brand-blue">+100%</p>
-                            <p class="mt-1 text-gray-600">en trazabilidad estratégica</p>
+                        <div data-index="3" class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue pointer-events-none">+100%</p>
+                            <p class="mt-1 text-gray-600 pointer-events-none">en trazabilidad estratégica</p>
                         </div>
                     </div>
                     <div class="chart-container w-full">
@@ -533,7 +533,12 @@
             
             createCarousel(dnaGrid, dnaCards, () => {}, { intervalTime: 5000, scrollTarget: dnaGrid, autoScroll: true });
 
-            // --- Gráfico de Impacto ---
+            // --- Sección de Impacto ---
+            const impactCardsContainer = document.getElementById('impact-cards-grid');
+            const impactCards = Array.from(impactCardsContainer.querySelectorAll('.impact-card'));
+            createCarousel(impactCardsContainer, impactCards, () => {}, { intervalTime: 5000, scrollTarget: impactCardsContainer, autoScroll: true });
+
+
             const impactChartCtx = document.getElementById('impactChart').getContext('2d');
             let impactChart;
             const createChart = () => {
