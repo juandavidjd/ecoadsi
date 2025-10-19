@@ -24,13 +24,13 @@
     <meta property="og:url" content="https://juandavidjd.github.io/ecoadsi/">
     <meta property="og:title" content="Ecosistema ADSI - Manifiesto">
     <meta property="og:description" content="Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
-    <meta property="og:image" content="https://juandavidjd.github.io/ecoadsi/favicon-512.jpg">
+    <meta property="og:image" content="https://juandavidjd.github.io/ecoadsi/favicon-512.png">
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://juandavidjd.github.io/ecoadsi/">
     <meta property="twitter:title" content="Ecosistema ADSI - Manifiesto">
     <meta property="twitter:description" content="Donde los datos, las decisiones y las personas se conectan para crear resultados con propósito.">
-    <meta property="twitter:image" content="https://juandavidjd.github.io/ecoadsi/favicon-512.jpg">
+    <meta property="twitter:image" content="https://juandavidjd.github.io/ecoadsi/favicon-512.png">
     <!-- =============================================================== -->
     
     <style>
@@ -41,17 +41,23 @@
         .bg-brand-blue { background-color: #0046FF; }
         .border-brand-blue { border-color: #0046FF; }
         
-        .philosophy-tab {
+        .philosophy-tab, .pillar-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
         }
-        .philosophy-tab.active { 
+        .philosophy-tab.active, .pillar-card.active { 
             border-color: #0046FF; 
             background-color: #0046FF; 
             color: white;
             transform: translateY(-4px);
             box-shadow: 0 6px 20px rgba(0, 70, 255, 0.25);
         }
-        .philosophy-tab.inactive {
+         .pillar-card.active h3 {
+            color: white;
+        }
+        .pillar-card.active p {
+            color: rgba(255,255,255,0.9);
+        }
+        .philosophy-tab.inactive, .pillar-card.inactive {
              opacity: 0.6;
         }
 
@@ -107,8 +113,12 @@
         #mobile-menu.open {
             transform: translateX(0);
         }
-        .dna-card {
+        .dna-card, .impact-card {
             transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
+        }
+        .dna-card:hover, .impact-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 120, 255, 0.15);
         }
         .dna-card.active {
             transform: translateY(-8px) scale(1.05);
@@ -141,6 +151,7 @@
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="ecosistema_adsi_manifiesto.html" class="text-2xl font-extrabold text-brand-blue header-link-interactive pulsing-link">🧠 Ecosistema ADSI</a>
             <nav class="hidden md:flex space-x-6 text-gray-600 font-medium">
+                <a href="#pilares" class="hover:text-brand-blue transition">Pilares</a>
                 <a href="#filosofia" class="hover:text-brand-blue transition">Filosofía</a>
                 <a href="#estructura" class="hover:text-brand-blue transition">Estructura</a>
                 <a href="#adn" class="hover:text-brand-blue transition">ADN</a>
@@ -158,6 +169,7 @@
     <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 p-6 md:hidden">
         <button id="close-menu-button" class="absolute top-6 right-6 text-gray-600 text-3xl">&times;</button>
         <nav class="mt-8 flex flex-col space-y-4">
+            <a href="#pilares" class="text-gray-700 hover:text-brand-blue transition mobile-menu-link">Pilares</a>
             <a href="#filosofia" class="text-gray-700 hover:text-brand-blue transition mobile-menu-link">Filosofía</a>
             <a href="#estructura" class="text-gray-700 hover:text-brand-blue transition mobile-menu-link">Estructura</a>
             <a href="#adn" class="text-gray-700 hover:text-brand-blue transition mobile-menu-link">ADN</a>
@@ -180,7 +192,32 @@
             </div>
         </section>
 
-        <section id="filosofia" class="py-20 bg-white">
+        <section id="pilares" class="py-20 bg-white">
+            <canvas class="animated-canvas" id="pilares-canvas"></canvas>
+            <div class="container mx-auto px-6 text-center content-z">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Los 3 Pilares del Ecosistema</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Nuestra arquitectura se sostiene sobre tres fundamentos que guían cada fase estratégica.</p>
+                <div id="pillars-grid" class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 cursor-pointer">
+                    <div data-index="0" class="pillar-card bg-white p-8 rounded-xl shadow-lg">
+                        <div class="text-4xl mb-4 pointer-events-none">💡</div>
+                        <h3 class="text-2xl font-bold text-brand-blue pointer-events-none">Conocimiento</h3>
+                        <p class="mt-2 text-gray-600 pointer-events-none">Transformamos datos en inteligencia práctica para tomar decisiones conscientes y precisas.</p>
+                    </div>
+                    <div data-index="1" class="pillar-card bg-white p-8 rounded-xl shadow-lg">
+                        <div class="text-4xl mb-4 pointer-events-none">🤝</div>
+                        <h3 class="text-2xl font-bold text-brand-blue pointer-events-none">Colaboración</h3>
+                        <p class="mt-2 text-gray-600 pointer-events-none">Unimos personas, IA y procesos en una red que genera sinergia y crecimiento colectivo.</p>
+                    </div>
+                    <div data-index="2" class="pillar-card bg-white p-8 rounded-xl shadow-lg">
+                        <div class="text-4xl mb-4 pointer-events-none">⚙️</div>
+                        <h3 class="text-2xl font-bold text-brand-blue pointer-events-none">Tecnología</h3>
+                        <p class="mt-2 text-gray-600 pointer-events-none">Automatizamos, medimos y escalamos con un propósito claro: generar resultados sostenibles y predecibles.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="filosofia" class="py-20">
             <canvas class="animated-canvas" id="filosofia-canvas"></canvas>
             <div class="container mx-auto px-6 text-center content-z">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">El Porqué de ADSI</h2>
@@ -199,7 +236,7 @@
             </div>
         </section>
 
-        <section id="estructura" class="py-20">
+        <section id="estructura" class="py-20 bg-white">
             <canvas class="animated-canvas" id="estructura-canvas"></canvas>
             <div class="container mx-auto px-6 content-z">
                 <div class="text-center">
@@ -207,17 +244,17 @@
                     <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">ADSI se compone de seis módulos interconectados, una red inteligente que funciona como el cerebro de una organización moderna, generando una inteligencia colectiva.</p>
                 </div>
 
-                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
                     <div id="modules-grid" class="md:col-span-1 grid grid-cols-1 gap-4">
                     </div>
-                    <div id="module-display" class="md:col-span-2 bg-white p-6 sm:p-8 rounded-2xl shadow-lg min-h-[300px] flex flex-col justify-center transition-opacity duration-300">
-                        <p class="text-xl text-center text-gray-400">Selecciona un módulo para ver su función.</p>
+                    <div id="module-display" class="md:col-span-2 bg-white p-2 sm:p-4 rounded-2xl shadow-lg min-h-[300px] flex flex-col justify-center transition-opacity duration-300">
+                        <!-- Logo or module content will be injected here -->
                     </div>
                 </div>
             </div>
         </section>
         
-        <section id="adn" class="py-20 bg-white">
+        <section id="adn" class="py-20">
             <canvas class="animated-canvas" id="adn-canvas"></canvas>
             <div class="container mx-auto px-6 text-center content-z">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">ADN de Marca</h2>
@@ -227,14 +264,32 @@
             </div>
         </section>
 
-        <section id="impacto" class="py-20">
+        <section id="impacto" class="py-20 bg-white">
             <canvas class="animated-canvas" id="impacto-canvas"></canvas>
             <div class="container mx-auto px-6 content-z">
                 <div class="text-center">
                     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Impacto: Resultados Medibles, Evolución Visible</h2>
                     <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Más allá de los números, el impacto se mide en la confianza y claridad que brindamos a nuestros aliados.</p>
                 </div>
-                <div class="mt-12">
+                <div class="mt-12 grid md:grid-cols-2 gap-8 items-center">
+                    <div class="grid grid-cols-2 gap-6 text-center">
+                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue">+40%</p>
+                            <p class="mt-1 text-gray-600">en eficiencia operativa</p>
+                        </div>
+                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue">+30%</p>
+                            <p class="mt-1 text-gray-600">en retención de clientes</p>
+                        </div>
+                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue">+35%</p>
+                            <p class="mt-1 text-gray-600">en reducción de costos</p>
+                        </div>
+                        <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
+                            <p class="text-3xl font-bold text-brand-blue">+100%</p>
+                            <p class="mt-1 text-gray-600">en trazabilidad estratégica</p>
+                        </div>
+                    </div>
                     <div class="chart-container">
                         <canvas id="impactChart"></canvas>
                     </div>
@@ -247,23 +302,13 @@
             </div>
         </section>
 
-        <section id="vision" class="py-20 bg-white">
+        <section id="vision" class="py-20">
             <canvas class="animated-canvas" id="vision-canvas"></canvas>
-            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center content-z">
-                <div class="text-left">
-                    <h4 class="text-brand-blue font-semibold">CONEXIÓN HUMANA</h4>
-                    <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Tecnología con Propósito</h2>
-                    <p class="mt-4 text-lg text-gray-600 leading-relaxed text-justify">
-                        Las marcas que trascienden no son las más grandes, sino las más humanas. ADSI parte de ese principio: no busca imponer procesos, sino co-crear experiencias. Cada implementación es un diálogo, cada resultado, una historia compartida.
-                    </p>
-                </div>
-                 <div class="text-left">
-                    <h4 class="text-brand-blue font-semibold">VISIÓN</h4>
-                    <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Evolución Consciente</h2>
-                    <p class="mt-4 text-lg text-gray-600 leading-relaxed text-justify">
-                        No buscamos ser el sistema más grande, sino el más sabio. El futuro de ADSI no depende del software, sino de la conciencia digital que despierta en las organizaciones que lo adoptan. Es un ecosistema en expansión constante.
-                    </p>
-                </div>
+            <div class="container mx-auto px-6 text-center content-z">
+                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Nuestra Visión</h2>
+                 <p class="mt-6 text-xl md:text-2xl max-w-4xl mx-auto text-gray-700 leading-relaxed">
+                    Ser el ecosistema líder de transformación digital inteligente en el mundo hispano, integrando automatización, educación y consultoría estratégica bajo una sola filosofía: <span class="font-semibold text-brand-blue">la inteligencia aplicada genera libertad.</span>
+                 </p>
             </div>
         </section>
 
@@ -309,19 +354,35 @@
 
             // --- Lógica General de Carrusel ---
             function createCarousel(container, items, contentUpdater, options) {
-                const { intervalTime = 5000, scrollTarget, autoScroll = false } = options;
+                const { intervalTime = 5000, scrollTarget, autoScroll = false, useLogo = false } = options;
                 let state = {
                     intervalId: null,
                     isRunning: false,
                     currentIndex: 0,
                 };
 
-                function updateView(indexToShow) {
-                    items.forEach((item, index) => {
-                        item.classList.toggle('active', index === indexToShow);
-                        item.classList.toggle('inactive', index !== indexToShow);
-                    });
-                    contentUpdater(indexToShow);
+                const sequenceLength = useLogo ? items.length + 1 : items.length;
+
+                function updateView(sequenceIndex) {
+                    if (useLogo) {
+                        if (sequenceIndex === 0) { // Show logo
+                            items.forEach(item => item.classList.add('inactive'));
+                            contentUpdater(-1);
+                        } else { // Show module
+                            const itemIndex = sequenceIndex - 1;
+                            items.forEach((item, index) => {
+                                item.classList.toggle('active', index === itemIndex);
+                                item.classList.toggle('inactive', index !== itemIndex);
+                            });
+                            contentUpdater(itemIndex);
+                        }
+                    } else { // Standard carousel
+                        items.forEach((item, index) => {
+                            item.classList.toggle('active', index === sequenceIndex);
+                            item.classList.toggle('inactive', index !== sequenceIndex);
+                        });
+                        contentUpdater(sequenceIndex);
+                    }
                 }
 
                 function play(startIndex) {
@@ -333,12 +394,12 @@
                         if (!state.isRunning) return;
                         updateView(state.currentIndex);
                         
-                        const activeItem = items[state.currentIndex];
+                        const activeItem = items[useLogo ? state.currentIndex - 1 : state.currentIndex];
                         if (autoScroll && activeItem && isDnaGridVisible) {
                             activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
 
-                        state.currentIndex = (state.currentIndex + 1) % items.length;
+                        state.currentIndex = (state.currentIndex + 1) % sequenceLength;
                     };
 
                     advance();
@@ -356,18 +417,25 @@
                     if (!item) return;
 
                     const clickedIndex = parseInt(item.dataset.index, 10);
+                    const sequenceIndex = useLogo ? clickedIndex + 1 : clickedIndex;
+
 
                     if (state.isRunning) {
-                        pause(clickedIndex);
+                        pause(sequenceIndex);
                     } else {
                         const targetElement = autoScroll ? item : scrollTarget;
                         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         setTimeout(() => {
-                            play(clickedIndex);
+                            play(sequenceIndex);
                         }, 300);
                     }
                 });
             }
+
+            // --- Sección de Pilares ---
+            const pillarsContainer = document.getElementById('pillars-grid');
+            const pillarCards = Array.from(pillarsContainer.querySelectorAll('.pillar-card'));
+            createCarousel(pillarsContainer, pillarCards, () => {}, { intervalTime: 5000, scrollTarget: pillarsContainer });
 
             // --- Sección de Filosofía ---
             const philosophyContainer = document.getElementById('philosophy-tabs-container');
@@ -411,7 +479,7 @@
                 moduleDisplay.style.transform = 'translateY(10px)';
                 setTimeout(() => {
                     if (index === -1) {
-                         moduleDisplay.innerHTML = `<p class="text-xl text-center text-gray-400">Selecciona un módulo para ver su función.</p>`;
+                         moduleDisplay.innerHTML = `<img src="adsi-logo.png" alt="Diagrama del Ecosistema ADSI" class="w-full h-auto max-w-sm mx-auto rounded-xl object-contain p-4 md:p-0">`;
                     } else {
                         const key = moduleKeys[index];
                         const module = DATA.modules[key];
@@ -427,8 +495,9 @@
                     moduleDisplay.style.transform = 'translateY(0px)';
                 }, 400);
             };
-
-            createCarousel(modulesGrid, moduleCards, moduleContentUpdater, { intervalTime: 5000, scrollTarget: moduleDisplay });
+            
+            moduleContentUpdater(-1); // Initialize with logo
+            createCarousel(modulesGrid, moduleCards, moduleContentUpdater, { intervalTime: 5000, scrollTarget: moduleDisplay, useLogo: true });
 
             // --- Sección ADN de Marca ---
             const dnaGrid = document.getElementById('dna-grid');
@@ -542,6 +611,7 @@
             }
 
             setupCanvasAnimation('hero-canvas', { nodeColor: 'rgba(255, 255, 255, 0.5)', lineColor: 'rgba(255, 255, 255, 0.2)', numNodes: 70 });
+            setupCanvasAnimation('pilares-canvas');
             setupCanvasAnimation('filosofia-canvas');
             setupCanvasAnimation('estructura-canvas');
             setupCanvasAnimation('adn-canvas');
