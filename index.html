@@ -82,8 +82,8 @@
             transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
         }
 
-        .chart-container { position: relative; width: 100%; max-width: 800px; margin: auto; height: 400px; }
-        @media (max-width: 768px) { .chart-container { height: 450px; } }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin: auto; height: 300px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
         html { scroll-behavior: smooth; }
         
         section { 
@@ -224,10 +224,10 @@
                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Nuestra filosofía se basa en una convicción clara: la tecnología solo tiene valor cuando entiende, amplifica y evoluciona con el ser humano.</p>
                 
                 <div class="mt-12 max-w-4xl mx-auto">
-                    <div id="philosophy-tabs-container" class="flex flex-col sm:flex-row justify-center border-b-2 border-gray-200 cursor-pointer">
-                        <button data-index="0" class="philosophy-tab py-3 px-6 font-semibold border-b-4">1. Origen</button>
-                        <button data-index="1" class="philosophy-tab py-3 px-6 font-semibold border-b-4">2. Propósito</button>
-                        <button data-index="2" class="philosophy-tab py-3 px-6 font-semibold border-b-4">3. Filosofía</button>
+                    <div id="philosophy-tabs-container" class="flex flex-wrap justify-center border-b-2 border-gray-200 cursor-pointer">
+                        <button data-index="0" class="philosophy-tab py-3 px-4 sm:px-6 font-semibold border-b-4">1. Origen</button>
+                        <button data-index="1" class="philosophy-tab py-3 px-4 sm:px-6 font-semibold border-b-4">2. Propósito</button>
+                        <button data-index="2" class="philosophy-tab py-3 px-4 sm:px-6 font-semibold border-b-4">3. Filosofía</button>
                     </div>
                     <div id="philosophy-content" class="mt-8 text-left text-lg text-gray-700 leading-relaxed min-h-[200px] sm:min-h-[150px]">
                         <!-- Contenido se inyecta aquí -->
@@ -271,8 +271,8 @@
                     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Impacto: Resultados Medibles, Evolución Visible</h2>
                     <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">Más allá de los números, el impacto se mide en la confianza y claridad que brindamos a nuestros aliados.</p>
                 </div>
-                <div class="mt-12 grid md:grid-cols-2 gap-8 items-center">
-                    <div class="grid grid-cols-2 gap-6 text-center">
+                <div class="mt-12 flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center w-full">
                         <div class="impact-card bg-gray-50 p-6 rounded-lg shadow">
                             <p class="text-3xl font-bold text-brand-blue">+40%</p>
                             <p class="mt-1 text-gray-600">en eficiencia operativa</p>
@@ -290,7 +290,7 @@
                             <p class="mt-1 text-gray-600">en trazabilidad estratégica</p>
                         </div>
                     </div>
-                    <div class="chart-container">
+                    <div class="chart-container w-full">
                         <canvas id="impactChart"></canvas>
                     </div>
                 </div>
