@@ -546,7 +546,7 @@
                     impactChart.destroy();
                 }
 
-                const isMobile = window.innerWidth < 768;
+                const isMobile = window.innerWidth < 1024;
 
                 const chartOptions = {
                     maintainAspectRatio: false,
@@ -621,7 +621,6 @@
             const chartObserver = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting) {
                     createChart();
-                    chartObserver.unobserve(document.getElementById('impacto'));
                 }
             }, { threshold: 0.5 });
             chartObserver.observe(document.getElementById('impacto'));
@@ -718,3 +717,4 @@
     </script>
 </body>
 </html>
+
