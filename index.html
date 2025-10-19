@@ -349,9 +349,17 @@
                     values: [40, 30, 35, 100]
                 }
             };
+            
+            const autoScrollCarousels = new Map();
 
-            let isDnaGridVisible = false;
-            let isPillarsGridVisible = false;
+            const carouselObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (autoScrollCarousels.has(entry.target)) {
+                        autoScrollCarousels.set(entry.target, entry.isIntersecting);
+                    }
+                });
+            }, { threshold: 0.1 });
+
 
             // --- Lógica General de Carrusel ---
             function createCarousel(container, items, contentUpdater, options) {
@@ -396,7 +404,9 @@
                         updateView(state.currentIndex);
                         
                         const activeItem = items[useLogo ? state.currentIndex - 1 : state.currentIndex];
-                         if (autoScroll && activeItem && (isDnaGridVisible || isPillarsGridVisible)) {
+                        
+                        const isVisible = autoScrollCarousels.get(container);
+                        if (autoScroll && activeItem && isVisible) {
                             activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
 
@@ -411,6 +421,11 @@
                     clearInterval(state.intervalId);
                     state.isRunning = false;
                     updateView(pauseIndex);
+                }
+                
+                if (autoScroll) {
+                    autoScrollCarousels.set(container, false);
+                    carouselObserver.observe(container);
                 }
 
                 container.addEventListener('click', e => {
@@ -436,10 +451,6 @@
             // --- Sección de Pilares ---
             const pillarsContainer = document.getElementById('pillars-grid');
             const pillarCards = Array.from(pillarsContainer.querySelectorAll('.pillar-card'));
-            const pillarObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { isPillarsGridVisible = entry.isIntersecting; });
-            }, { threshold: 0.1 });
-            pillarObserver.observe(pillarsContainer);
             createCarousel(pillarsContainer, pillarCards, () => {}, { intervalTime: 5000, scrollTarget: pillarsContainer, autoScroll: true });
 
             // --- Sección de Filosofía ---
@@ -520,13 +531,6 @@
                 dnaCards.push(item);
             });
             
-            const dnaObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    isDnaGridVisible = entry.isIntersecting;
-                });
-            }, { threshold: 0.1 });
-            dnaObserver.observe(dnaGrid);
-
             createCarousel(dnaGrid, dnaCards, () => {}, { intervalTime: 5000, scrollTarget: dnaGrid, autoScroll: true });
 
             // --- Gráfico de Impacto ---
