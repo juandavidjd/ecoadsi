@@ -537,14 +537,18 @@
             const impactChartCtx = document.getElementById('impactChart').getContext('2d');
             let impactChart;
             const createChart = () => {
-                if (impactChart) impactChart.destroy();
+                if(impactChart) {
+                    impactChart.destroy();
+                }
                 impactChart = new Chart(impactChartCtx, {
                     type: 'bar', data: { labels: DATA.impact.labels, datasets: [{ label: '% de Mejora', data: DATA.impact.values, backgroundColor: ['rgba(0, 70, 255, 0.7)','rgba(0, 120, 255, 0.7)','rgba(0, 170, 255, 0.7)','rgba(0, 224, 255, 0.7)'], borderColor: ['rgba(0, 70, 255, 1)','rgba(0, 120, 255, 1)','rgba(0, 170, 255, 1)','rgba(0, 224, 255, 1)'], borderWidth: 1 }] },
                     options: { indexAxis: 'y', maintainAspectRatio: false, responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` +${c.raw}%` } } }, scales: { x: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.05)' }, ticks: { callback: (v) => v + '%' } }, y: { grid: { display: false } } }, animation: { duration: 1500, easing: 'easeInOutQuart' } }
                 });
             }
             const chartObserver = new IntersectionObserver((entries) => {
-                if(entries[0].isIntersecting){ createChart(); chartObserver.unobserve(document.getElementById('impacto')); }
+                if(entries[0].isIntersecting){ 
+                    createChart(); 
+                }
             }, { threshold: 0.5 });
             chartObserver.observe(document.getElementById('impacto'));
             
